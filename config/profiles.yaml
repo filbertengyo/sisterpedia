@@ -1,0 +1,15 @@
+# CKKS parameter profiles (see docs/PARAMS.md).
+# PROPOSAL: values are not yet verified against Lattigo's security checks.
+# Issue A1.1 must verify them, then update docs/PARAMS.md accordingly.
+# Select a profile with the CKKS_PROFILE env var (p1 | p2).
+profiles:
+  p1:
+    log_n: 13
+    log_q: [60, 40, 40]      # level 2 => exactly two chained multiplications
+    log_p: [61]
+    log_default_scale: 40
+  p2:
+    log_n: 14
+    log_q: [60, 40, 40, 40]  # level 3 => one spare level
+    log_p: [61]
+    log_default_scale: 40
