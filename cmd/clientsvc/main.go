@@ -1,12 +1,13 @@
-// Command clientsvc adalah client local service: tempat keygen, enkripsi, dan
-// dekripsi berlangsung. Secret key hanya hidup di proses/volume ini.
-// Stub awal: baru melayani /healthz. Implementasi sebenarnya ada di issue A1-A3.
+// Command clientsvc is the client local service: key generation, encryption and
+// decryption happen here. The secret key only lives in this process/volume.
+// Initial stub: serves /healthz only. Real implementation is in A1-A3.
 package main
 
 import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -18,8 +19,17 @@ func main() {
 		_, _ = w.Write([]byte(`{"status":"ok","service":"client"}`))
 	})
 
+	srv := &http.Server{
+		Addr:              addr,
+		Handler:           mux,
+		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       60 * time.Second,
+		WriteTimeout:      120 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+
 	log.Printf("client service listening on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(srv.ListenAndServe())
 }
 
 func getenv(k, def string) string {

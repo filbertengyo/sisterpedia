@@ -1,0 +1,21 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: standard        # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - gosec                # penting untuk repo kripto
+    - bodyclose
+    - errorlint
+  exclusions:
+    paths:
+      - web
+
+formatters:
+  enable:
+    - gofmt
+  exclusions:
+    paths:
+      - web

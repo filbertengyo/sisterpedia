@@ -1,11 +1,18 @@
 # Target dasar; isi lengkap menyusul di issue OPS/C2/C3.
-.PHONY: build test run-server run-client web-dev up down test-all bench
+.PHONY: build test lint run-server run-client web-dev up down test-all bench
+
+# The race detector needs cgo (a C compiler). Enable it only when gcc is present;
+# CI always runs with -race.
+RACE := $(shell command -v gcc >/dev/null 2>&1 && echo -race)
 
 build:
 	go build -o bin/ ./cmd/...
 
 test:
-	go test -race ./...
+	go test $(RACE) -cover ./...
+
+lint:
+	golangci-lint run ./...
 
 run-server:
 	go run ./cmd/server

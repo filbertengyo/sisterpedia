@@ -1,11 +1,13 @@
-// Command server adalah REST API toko daring (hanya artefak publik + ciphertext).
-// Stub awal: baru melayani /healthz. Handler sebenarnya dikerjakan di issue B1-B3.
+// Command server is the online-shop REST API. It only handles public artifacts
+// and ciphertexts; it must never hold or use a secret key.
+// Initial stub: serves /healthz only. Real handlers are implemented in B1-B3.
 package main
 
 import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -17,8 +19,17 @@ func main() {
 		_, _ = w.Write([]byte(`{"status":"ok","service":"server"}`))
 	})
 
+	srv := &http.Server{
+		Addr:              addr,
+		Handler:           mux,
+		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       60 * time.Second, // request bodies carry large keys/ciphertexts
+		WriteTimeout:      120 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+
 	log.Printf("server listening on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(srv.ListenAndServe())
 }
 
 func getenv(k, def string) string {
