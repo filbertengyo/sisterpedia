@@ -10,7 +10,7 @@ COPY internal ./internal
 COPY pkg ./pkg
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/clientsvc ./cmd/clientsvc
 
-FROM alpine:3.21
+FROM alpine:3.24
 # secret key hanya hidup di volume /client_data milik service ini
 RUN adduser -D -u 10001 app && mkdir -p /client_data /app && chown app:app /client_data
 USER app
