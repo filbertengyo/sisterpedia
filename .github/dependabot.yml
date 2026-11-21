@@ -1,21 +1,45 @@
 version: 2
 updates:
+  # Minor/patch updates are grouped into one PR per ecosystem.
+  # Major bumps are ignored on purpose (framework/toolchain majors are done manually).
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }
+    groups:
+      actions:
+        patterns: ["*"]
+
   - package-ecosystem: gomod
     directory: /
     schedule: { interval: weekly }
-    # Do not bump the FHE library blindly: serialization format and API may change.
+    groups:
+      go-deps:
+        update-types: ["minor", "patch"]
     ignore:
+      # Do not bump the FHE library blindly: serialization format and API may change.
       - dependency-name: github.com/tuneinsight/lattigo/*
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
+
   - package-ecosystem: npm
     directory: /web
     schedule: { interval: weekly }
+    groups:
+      web-deps:
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
   - package-ecosystem: docker
     directory: /deploy
     schedule: { interval: weekly }
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
   - package-ecosystem: docker
     directory: /web
     schedule: { interval: weekly }
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

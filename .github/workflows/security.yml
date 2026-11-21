@@ -17,7 +17,9 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          # govulncheck itself requires a recent Go, newer than the go.mod minimum
+          go-version: stable
+          check-latest: true
           cache: true
       - run: go install golang.org/x/vuln/cmd/govulncheck@latest
       - run: govulncheck ./...
