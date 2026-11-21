@@ -1,0 +1,16 @@
+.git
+.github
+local-notes
+docs
+report
+bench/results
+tests/results
+web
+client_data
+server_data
+*.key
+.env
+.env.*
+!.env.example
+*.db
+*.pdf
