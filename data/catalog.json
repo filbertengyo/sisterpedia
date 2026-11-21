@@ -1,0 +1,15 @@
+{
+  "products": [
+    { "product_id": "P001", "numeric_id": 1, "name": "Chocolate Cake", "base_price": 12500 },
+    { "product_id": "P002", "numeric_id": 2, "name": "Cheese Cake", "base_price": 15000 },
+    { "product_id": "P003", "numeric_id": 3, "name": "Strawberry Cake", "base_price": 17500 },
+    { "product_id": "P004", "numeric_id": 4, "name": "White Bread", "base_price": 9000 },
+    { "product_id": "P005", "numeric_id": 5, "name": "Bottled Tea", "base_price": 5000 }
+  ],
+  "discounts": [
+    { "code": "NONE", "numeric_id": 0, "percent": 0, "fixed": 0 },
+    { "code": "DISC10", "numeric_id": 1, "percent": 0.1, "fixed": 0 },
+    { "code": "FLAT500", "numeric_id": 2, "percent": 0, "fixed": 500 },
+    { "code": "COMBO", "numeric_id": 3, "percent": 0.1, "fixed": 500 }
+  ]
+}
