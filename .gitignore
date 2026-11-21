@@ -1,0 +1,31 @@
+# Rahasia dan kunci (kunci contoh uji dikecualikan di bawah)
+*.key
+.env
+.env.*
+!.env.example
+!tests/fixtures/keys/
+!tests/fixtures/keys/**
+
+# Data runtime
+client_data/
+server_data/
+*.db
+*.db-shm
+*.db-wal
+
+# Build
+/bin/
+*.exe
+*.test
+*.out
+coverage.*
+
+# Node (web/ punya .gitignore sendiri)
+node_modules/
+.next/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

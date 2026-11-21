@@ -1,0 +1,15 @@
+# Normalisasi line ending: file teks disimpan LF di repo
+* text=auto
+
+# Harus LF agar jalan di container/WSL/Linux
+*.sh text eol=lf
+Makefile text eol=lf
+Dockerfile* text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+go.mod text eol=lf
+go.sum text eol=lf
+
+# Biner
+*.ico binary
+*.pdf binary
