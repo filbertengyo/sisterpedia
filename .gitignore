@@ -20,6 +20,10 @@ server_data/
 *.out
 coverage.*
 
+# Generated browser crypto bridge (built by `make wasm` / web/Dockerfile)
+web/public/crypto.wasm
+web/public/wasm_exec.js
+
 # Node (web/ punya .gitignore sendiri)
 node_modules/
 .next/
@@ -29,3 +33,6 @@ node_modules/
 .idea/
 .DS_Store
 Thumbs.db
+
+# stray binary when "go build ./..." matches a single main package
+/server

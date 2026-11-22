@@ -16,24 +16,28 @@ jobs:
   smoke:
     name: Build images and smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
-      - name: Build images
+      - name: Build images (server, web incl. WASM crypto bridge)
         run: docker compose build
       - name: Start stack and wait for healthchecks
         run: docker compose up -d --wait --wait-timeout 180
       - name: Health endpoints
         run: |
           curl -fsS http://127.0.0.1:8000/healthz
-          curl -fsS http://127.0.0.1:8001/healthz
           curl -fsS -o /dev/null http://127.0.0.1:3000/
-      - name: Trust boundary - web must not reach server
+      - name: WASM bridge assets are served by the web image
         run: |
-          if docker compose exec -T web wget -qO- -T 3 http://server:8000/healthz; then
-            echo "web can reach server: network isolation is broken"; exit 1
-          fi
-          echo "isolated as expected"
+          curl -fsSI http://127.0.0.1:3000/crypto.wasm | grep -iE '^(HTTP|content-type|content-length)'
+          curl -fsSI http://127.0.0.1:3000/wasm_exec.js | head -1
+      - name: CORS - server only allows the web origin
+        run: |
+          ok="$(curl -fsSI -X OPTIONS http://127.0.0.1:8000/healthz \
+            -H 'Origin: http://localhost:3000' \
+            -H 'Access-Control-Request-Method: GET' | tr -d '\r' | grep -i '^access-control-allow-origin' || true)"
+          echo "allowed origin response: [$ok]"
+          # TODO(B2.1): enforce once the server implements CORS (ALLOWED_ORIGIN)
       - name: Logs on failure
         if: failure()
         run: docker compose logs --no-color

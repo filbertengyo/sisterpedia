@@ -2,12 +2,12 @@
 
 Status: **usulan untuk dibekukan di issue #1 (S0.4)**. Perubahan setelah dibekukan hanya lewat diskusi di issue tersebut.
 
-Server hanya menerima/menyimpan artefak publik dan ciphertext. Semua nilai sensitif (saldo, nominal topup, kuantitas, total tagihan, metadata) berupa **ciphertext biner pustaka yang di-encode Base64 standar (RFC 4648, dengan padding)** di dalam JSON. Tidak ada endpoint yang mengembalikan plaintext hasil dekripsi.
+The "client" is the user's browser: all encryption/decryption runs there (Lattigo compiled to WebAssembly, see `CRYPTO_BRIDGE.md`) and the browser calls this API directly. Server hanya menerima/menyimpan artefak publik dan ciphertext. Semua nilai sensitif (saldo, nominal topup, kuantitas, total tagihan, metadata) berupa **ciphertext biner pustaka yang di-encode Base64 standar (RFC 4648, dengan padding)** di dalam JSON. Tidak ada endpoint yang mengembalikan plaintext hasil dekripsi.
 
 ## Ketentuan umum
-- Base URL dev: `http://localhost:8000`. Content-Type request/respons: `application/json; charset=utf-8`.
+- Base URL dev: `http://localhost:8000`. **CORS**: the server answers preflight (`OPTIONS`) and allows only the origin in `ALLOWED_ORIGIN` (the web GUI), with methods `GET, POST, OPTIONS` and header `Content-Type`. Content-Type request/respons: `application/json; charset=utf-8`.
 - `user_id`: string `^[a-z0-9_-]{3,32}$`.
-- Field tak dikenal ditolak (`400 invalid_json`). Body maksimum `MAX_BODY_BYTES` (default 8 MiB; kunci relinearization besar).
+- Field tak dikenal ditolak (`400 invalid_json`). Body maksimum `MAX_BODY_BYTES` (default **16 MiB**; Activate on profile p2 is about 8.3 MiB after Base64 because pk 1.25 MiB + relin key 5 MiB are sent).
 - Base64 string kosong atau tidak valid -> `400 invalid_payload`.
 - Penolakan **tidak** mengubah saldo maupun riwayat. Pembaruan saldo + penambahan riwayat disimpan atomik.
 - Waktu memakai RFC 3339 UTC.

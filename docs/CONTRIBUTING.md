@@ -21,5 +21,5 @@
 ## Lokal
 - Go: `go build ./...`, `go vet ./...`, `go test -race ./...` (di Windows jalankan lewat WSL).
 - Web: `cd web && npm ci && npm run lint && npm run build`.
-- Stack: `docker compose up --build`; GUI di `http://localhost:3000`, client service `:8001`, server `:8000`.
+- Stack: `docker compose up --build`; GUI di `http://localhost:3000`, server `:8000`. Kripto sisi pengguna berjalan di browser (WASM, `make wasm`), tidak ada client service.
 - Format: `gofmt` untuk Go; ESLint untuk web.

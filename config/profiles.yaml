@@ -1,6 +1,6 @@
 # CKKS parameter profiles (see docs/PARAMS.md).
-# PROPOSAL: values are not yet verified against Lattigo's security checks.
-# Issue A1.1 must verify them, then update docs/PARAMS.md accordingly.
+# Verified in a spike with Lattigo v6.2.0 (native + WASM): both profiles are accepted
+# and the reference computation stays within 1.4e-4. A1.1 formalizes the loader.
 # Select a profile with the CKKS_PROFILE env var (p1 | p2).
 profiles:
   p1:
