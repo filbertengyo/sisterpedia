@@ -7,6 +7,7 @@ FROM golang:${GO_VERSION}-alpine AS wasm
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
+COPY config ./config
 COPY pkg ./pkg
 COPY cmd/wasm ./cmd/wasm
 RUN GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o /out/crypto.wasm ./cmd/wasm \
