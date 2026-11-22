@@ -25,6 +25,11 @@ jobs:
       - run: go vet ./...
       - run: go build ./...
       - run: go test -race -cover ./...
+      # browser crypto bridge must keep compiling as WebAssembly
+      - name: Build and vet WASM target
+        run: |
+          GOOS=js GOARCH=wasm go vet ./cmd/wasm
+          GOOS=js GOARCH=wasm go build -o /dev/null ./cmd/wasm
 
   lint:
     name: Go lint (golangci-lint)

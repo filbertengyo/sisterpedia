@@ -5,8 +5,10 @@ docs
 report
 bench/results
 tests/results
-web
-client_data
+web/node_modules
+web/.next
+web/public/crypto.wasm
+web/public/wasm_exec.js
 server_data
 *.key
 .env
