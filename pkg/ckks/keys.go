@@ -11,44 +11,6 @@ import (
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
 )
 
-type Parameters struct {
-	value ckks.Parameters
-}
-
-func (p Parameters) MarshalBinary() ([]byte, error) {
-	return p.value.MarshalBinary()
-}
-
-func (p *Parameters) UnmarshalBinary(data []byte) error {
-	return p.value.UnmarshalBinary(data)
-}
-
-func (p Parameters) MarshalJSON() ([]byte, error) {
-	bin, err := p.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-
-	b64 := base64.StdEncoding.EncodeToString(bin)
-
-	return json.Marshal(b64)
-}
-
-func (p *Parameters) UnmarshalJSON(data []byte) error {
-	var b64 string
-	err := json.Unmarshal(data, &b64)
-	if err != nil {
-		return err
-	}
-
-	bin, err := base64.StdEncoding.DecodeString(b64)
-	if err != nil {
-		return err
-	}
-
-	return p.UnmarshalBinary(bin)
-}
-
 type SecretKey struct {
 	value rlwe.SecretKey
 }
@@ -435,18 +397,18 @@ func (k Keyset) ExportSecret() SecretKey {
 }
 
 func GenKeys(profile Profile) (Keyset, error) {
-	params, err := ckks.NewParametersFromLiteral(profile.asLattigoParams())
+	params, err := profile.GetParameters()
 	if err != nil {
 		return Keyset{}, err
 	}
 
-	kgen := ckks.NewKeyGenerator(params)
+	kgen := ckks.NewKeyGenerator(params.value)
 	sk := kgen.GenSecretKeyNew()
 	pk := kgen.GenPublicKeyNew(sk)
 	rlk := kgen.GenRelinearizationKeyNew(sk)
 
 	return Keyset{
-		Params: Parameters{value: params},
+		Params: params,
 		SK:     SecretKey{value: *sk},
 		PK:     PublicKey{value: *pk},
 		RLK:    RelinearizationKey{value: *rlk},

@@ -7,28 +7,52 @@ import (
 )
 
 func TestLoadP1(t *testing.T) {
-	_, err := GetProfile("p1")
+	_, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("GetProfile(\"p1\") returned an error: %v", err)
 	}
 }
 
 func TestLoadP2(t *testing.T) {
-	_, err := GetProfile("p2")
+	_, err := GetProfileByName("p2")
 	if err != nil {
 		t.Errorf("GetProfile(\"p2\") returned an error: %v", err)
 	}
 }
 
 func TestLoadUnknownProfile(t *testing.T) {
-	_, err := GetProfile("p3")
+	_, err := GetProfileByName("p3")
 	if err == nil {
 		t.Errorf("GetProfile(\"p3\") didn't return an error")
 	}
 }
 
+func TestLoadProfileFromParam(t *testing.T) {
+	profile, err := GetProfileByName("p1")
+	if err != nil {
+		t.Errorf("GetProfile returned an error: %v", err)
+		return
+	}
+
+	params, err := profile.GetParameters()
+	if err != nil {
+		t.Errorf("GetParameters returned an error: %v", err)
+		return
+	}
+
+	retrievedProfile, err := GetProfileByParameters(params)
+	if err != nil {
+		t.Errorf("GetProfileByParameters returned an error: %v", err)
+		return
+	}
+
+	if profile.Name != retrievedProfile.Name {
+		t.Error("retrieved profile does not match original profile")
+	}
+}
+
 func TestP1Security(t *testing.T) {
-	profile, err := GetProfile("p1")
+	profile, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("GetProfile(\"p1\") returned an error: %v", err)
 		return
@@ -57,7 +81,7 @@ func TestP1Security(t *testing.T) {
 }
 
 func TestP2Security(t *testing.T) {
-	profile, err := GetProfile("p2")
+	profile, err := GetProfileByName("p2")
 	if err != nil {
 		t.Errorf("GetProfile(\"p2\") returned an error: %v", err)
 		return

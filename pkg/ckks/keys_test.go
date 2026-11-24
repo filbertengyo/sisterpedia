@@ -7,13 +7,13 @@ import (
 )
 
 func TestP1Keygen(t *testing.T) {
-	p1, err := GetProfile("p1")
+	p1, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile p1")
 		return
 	}
 
-	_, err = GenKeys(*p1)
+	_, err = GenKeys(p1)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -21,13 +21,13 @@ func TestP1Keygen(t *testing.T) {
 }
 
 func TestP2Keygen(t *testing.T) {
-	p2, err := GetProfile("p1")
+	p2, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile p2")
 		return
 	}
 
-	_, err = GenKeys(*p2)
+	_, err = GenKeys(p2)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -35,13 +35,13 @@ func TestP2Keygen(t *testing.T) {
 }
 
 func TestPublicKeysetBinaryMarshalling(t *testing.T) {
-	profile, err := GetProfile("p1")
+	profile, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
 	}
 
-	keyset, err := GenKeys(*profile)
+	keyset, err := GenKeys(profile)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -73,13 +73,13 @@ func TestPublicKeysetBinaryMarshalling(t *testing.T) {
 }
 
 func TestPublicKeysetJsonMarshalling(t *testing.T) {
-	profile, err := GetProfile("p1")
+	profile, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
 	}
 
-	keyset, err := GenKeys(*profile)
+	keyset, err := GenKeys(profile)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -111,13 +111,13 @@ func TestPublicKeysetJsonMarshalling(t *testing.T) {
 }
 
 func TestKeysetBinaryMarshalling(t *testing.T) {
-	profile, err := GetProfile("p1")
+	profile, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
 	}
 
-	keyset, err := GenKeys(*profile)
+	keyset, err := GenKeys(profile)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -148,13 +148,13 @@ func TestKeysetBinaryMarshalling(t *testing.T) {
 }
 
 func TestKeysetJsonMarshalling(t *testing.T) {
-	profile, err := GetProfile("p1")
+	profile, err := GetProfileByName("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
 	}
 
-	keyset, err := GenKeys(*profile)
+	keyset, err := GenKeys(profile)
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
