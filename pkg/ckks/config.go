@@ -1,8 +1,6 @@
 package ckks
 
 import (
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 
@@ -17,72 +15,61 @@ type Profile struct {
 	LogQ            []int  `yaml:"log_q"`
 	LogP            []int  `yaml:"log_p"`
 	LogDefaultScale int    `yaml:"log_default_scale"`
+	params          ckks.Parameters
 }
 
-func (p Profile) asLattigoParams() ckks.ParametersLiteral {
-	return ckks.ParametersLiteral{
-		LogN:            p.LogN,
-		LogQ:            p.LogQ,
-		LogP:            p.LogP,
-		LogDefaultScale: p.LogDefaultScale,
-	}
+func (p Profile) MarshalBinary() ([]byte, error) {
+	return []byte(p.Name), nil
 }
 
-func (p Profile) GetParameters() (Parameters, error) {
-	params, err := ckks.NewParametersFromLiteral(p.asLattigoParams())
+func (p *Profile) UnmarshalBinary(data []byte) error {
+	name := string(data)
+	profile, err := GetProfile(name)
 	if err != nil {
-		return Parameters{}, err
+		return err
 	}
 
-	return Parameters{value: params}, nil
+	p.Name = profile.Name
+	p.LogN = profile.LogN
+	p.LogQ = profile.LogQ
+	p.LogP = profile.LogP
+	p.LogDefaultScale = profile.LogDefaultScale
+	p.params = profile.params
+
+	return nil
+}
+
+func (p Profile) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Name)
+}
+
+func (p *Profile) UnmarshalJSON(data []byte) error {
+	var name string
+	err := json.Unmarshal(data, &name)
+	if err != nil {
+		return err
+	}
+
+	profile, err := GetProfile(name)
+	if err != nil {
+		return err
+	}
+
+	p.Name = profile.Name
+	p.LogN = profile.LogN
+	p.LogQ = profile.LogQ
+	p.LogP = profile.LogP
+	p.LogDefaultScale = profile.LogDefaultScale
+	p.params = profile.params
+
+	return nil
 }
 
 type profilesConfig struct {
 	Profiles map[string]Profile `yaml:"profiles"`
 }
 
-type Parameters struct {
-	value ckks.Parameters
-}
-
-func (p Parameters) MarshalBinary() ([]byte, error) {
-	return p.value.MarshalBinary()
-}
-
-func (p *Parameters) UnmarshalBinary(data []byte) error {
-	return p.value.UnmarshalBinary(data)
-}
-
-func (p Parameters) MarshalJSON() ([]byte, error) {
-	bin, err := p.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-
-	b64 := base64.StdEncoding.EncodeToString(bin)
-
-	return json.Marshal(b64)
-}
-
-func (p *Parameters) UnmarshalJSON(data []byte) error {
-	var b64 string
-	err := json.Unmarshal(data, &b64)
-	if err != nil {
-		return err
-	}
-
-	bin, err := base64.StdEncoding.DecodeString(b64)
-	if err != nil {
-		return err
-	}
-
-	return p.UnmarshalBinary(bin)
-}
-
-var (
-	profiles  profilesConfig
-	paramsMap map[[32]byte]Profile
-)
+var profiles profilesConfig
 
 func init() {
 	err := yaml.Unmarshal(config.Profiles, &profiles)
@@ -90,45 +77,25 @@ func init() {
 		panic(err)
 	}
 
-	paramsMap = make(map[[32]byte]Profile)
-
 	for name, profile := range profiles.Profiles {
+		params, err := ckks.NewParametersFromLiteral(ckks.ParametersLiteral{
+			LogN:            profile.LogN,
+			LogQ:            profile.LogQ,
+			LogP:            profile.LogP,
+			LogDefaultScale: profile.LogDefaultScale,
+		})
+		if err != nil {
+			panic(err)
+		}
+
 		profile.Name = name
+		profile.params = params
 		profiles.Profiles[name] = profile
-
-		params, err := profile.GetParameters()
-		if err != nil {
-			panic(err)
-		}
-
-		paramsBin, err := params.MarshalBinary()
-		if err != nil {
-			panic(err)
-		}
-
-		digest := sha256.Sum256(paramsBin)
-		paramsMap[digest] = profile
 	}
 }
 
-func GetProfileByName(name string) (Profile, error) {
+func GetProfile(name string) (Profile, error) {
 	profile, ok := profiles.Profiles[name]
-
-	if !ok {
-		return Profile{}, errors.New("ckks profile not found")
-	}
-
-	return profile, nil
-}
-
-func GetProfileByParameters(parameters Parameters) (Profile, error) {
-	paramsBin, err := parameters.MarshalBinary()
-	if err != nil {
-		panic(err)
-	}
-
-	digest := sha256.Sum256(paramsBin)
-	profile, ok := paramsMap[digest]
 
 	if !ok {
 		return Profile{}, errors.New("ckks profile not found")

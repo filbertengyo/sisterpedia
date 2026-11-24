@@ -126,21 +126,21 @@ func (rlk *RelinearizationKey) UnmarshalJSON(data []byte) error {
 }
 
 type PublicKeyset struct {
-	Params Parameters         `json:"params"`
-	PK     PublicKey          `json:"pk"`
-	RLK    RelinearizationKey `json:"rlk"`
+	Profile Profile            `json:"profile"`
+	PK      PublicKey          `json:"pk"`
+	RLK     RelinearizationKey `json:"rlk"`
 }
 
 // Magic Number: SISTER + PKS + (version)
 const publicKeysetMagicNumber0 = "SISTERPKS0"
 
 func (pks PublicKeyset) MarshalBinary() ([]byte, error) {
-	paramsBin, err := pks.Params.MarshalBinary()
+	profileBin, err := pks.Profile.MarshalBinary()
 	if err != nil {
 		return nil, err
 	}
-	paramsSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(paramsSize, uint32(len(paramsBin)))
+	profileSize := make([]byte, 4)
+	binary.BigEndian.PutUint32(profileSize, uint32(len(profileBin)))
 
 	pkBin, err := pks.PK.MarshalBinary()
 	if err != nil {
@@ -158,8 +158,8 @@ func (pks PublicKeyset) MarshalBinary() ([]byte, error) {
 
 	chunks := [][]byte{
 		[]byte(publicKeysetMagicNumber0),
-		paramsSize,
-		paramsBin,
+		profileSize,
+		profileBin,
 		pkSize,
 		pkBin,
 		rlkSize,
@@ -179,17 +179,17 @@ func (pks *PublicKeyset) UnmarshalBinary(data []byte) error {
 		if offset+4 > len(data) {
 			return errors.New("unexpected eof")
 		}
-		paramsSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
+		profileSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
 		offset += 4
 
-		if offset+paramsSize > len(data) {
+		if offset+profileSize > len(data) {
 			return errors.New("unexpected eof")
 		}
-		paramsBin := data[offset : offset+paramsSize]
-		offset += paramsSize
+		profileBin := data[offset : offset+profileSize]
+		offset += profileSize
 
-		var params Parameters
-		err = params.UnmarshalBinary(paramsBin)
+		var profile Profile
+		err = profile.UnmarshalBinary(profileBin)
 		if err != nil {
 			return err
 		}
@@ -230,7 +230,7 @@ func (pks *PublicKeyset) UnmarshalBinary(data []byte) error {
 			return err
 		}
 
-		pks.Params = params
+		pks.Profile = profile
 		pks.PK = pk
 		pks.RLK = rlk
 
@@ -241,22 +241,22 @@ func (pks *PublicKeyset) UnmarshalBinary(data []byte) error {
 }
 
 type Keyset struct {
-	Params Parameters         `json:"params"`
-	SK     SecretKey          `json:"sk"`
-	PK     PublicKey          `json:"pk"`
-	RLK    RelinearizationKey `json:"rlk"`
+	Profile Profile            `json:"profile"`
+	SK      SecretKey          `json:"sk"`
+	PK      PublicKey          `json:"pk"`
+	RLK     RelinearizationKey `json:"rlk"`
 }
 
 // Magic Number: SISTER + KS + (version)
 const keysetMagicNumber0 = "SISTERKS0"
 
 func (ks Keyset) MarshalBinary() ([]byte, error) {
-	paramsBin, err := ks.Params.MarshalBinary()
+	profileBin, err := ks.Profile.MarshalBinary()
 	if err != nil {
 		return nil, err
 	}
-	paramsSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(paramsSize, uint32(len(paramsBin)))
+	profileSize := make([]byte, 4)
+	binary.BigEndian.PutUint32(profileSize, uint32(len(profileBin)))
 
 	skBin, err := ks.SK.MarshalBinary()
 	if err != nil {
@@ -281,8 +281,8 @@ func (ks Keyset) MarshalBinary() ([]byte, error) {
 
 	chunks := [][]byte{
 		[]byte(keysetMagicNumber0),
-		paramsSize,
-		paramsBin,
+		profileSize,
+		profileBin,
 		skSize,
 		skBin,
 		pkSize,
@@ -304,17 +304,17 @@ func (ks *Keyset) UnmarshalBinary(data []byte) error {
 		if offset+4 > len(data) {
 			return errors.New("unexpected eof")
 		}
-		paramsSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
+		profileSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
 		offset += 4
 
-		if offset+paramsSize > len(data) {
+		if offset+profileSize > len(data) {
 			return errors.New("unexpected eof")
 		}
-		paramsBin := data[offset : offset+paramsSize]
-		offset += paramsSize
+		profileBin := data[offset : offset+profileSize]
+		offset += profileSize
 
-		var params Parameters
-		err = params.UnmarshalBinary(paramsBin)
+		var profile Profile
+		err = profile.UnmarshalBinary(profileBin)
 		if err != nil {
 			return err
 		}
@@ -373,7 +373,7 @@ func (ks *Keyset) UnmarshalBinary(data []byte) error {
 			return err
 		}
 
-		ks.Params = params
+		ks.Profile = profile
 		ks.SK = sk
 		ks.PK = pk
 		ks.RLK = rlk
@@ -386,9 +386,9 @@ func (ks *Keyset) UnmarshalBinary(data []byte) error {
 
 func (ks Keyset) ExportPublic() PublicKeyset {
 	return PublicKeyset{
-		Params: ks.Params,
-		PK:     ks.PK,
-		RLK:    ks.RLK,
+		Profile: ks.Profile,
+		PK:      ks.PK,
+		RLK:     ks.RLK,
 	}
 }
 
@@ -397,20 +397,15 @@ func (k Keyset) ExportSecret() SecretKey {
 }
 
 func (profile Profile) GenKeys() (Keyset, error) {
-	params, err := profile.GetParameters()
-	if err != nil {
-		return Keyset{}, err
-	}
-
-	kgen := ckks.NewKeyGenerator(params.value)
+	kgen := ckks.NewKeyGenerator(profile.params)
 	sk := kgen.GenSecretKeyNew()
 	pk := kgen.GenPublicKeyNew(sk)
 	rlk := kgen.GenRelinearizationKeyNew(sk)
 
 	return Keyset{
-		Params: params,
-		SK:     SecretKey{value: *sk},
-		PK:     PublicKey{value: *pk},
-		RLK:    RelinearizationKey{value: *rlk},
+		Profile: profile,
+		SK:      SecretKey{value: *sk},
+		PK:      PublicKey{value: *pk},
+		RLK:     RelinearizationKey{value: *rlk},
 	}, nil
 }

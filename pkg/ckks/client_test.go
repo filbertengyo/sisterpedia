@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewClientCrypto(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -26,7 +26,7 @@ func TestNewClientCrypto(t *testing.T) {
 }
 
 func TestDecryptScalar(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -66,7 +66,7 @@ func TestDecryptScalar(t *testing.T) {
 }
 
 func TestDecryptVector(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return

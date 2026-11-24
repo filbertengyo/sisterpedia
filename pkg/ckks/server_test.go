@@ -3,7 +3,7 @@ package ckks
 import "testing"
 
 func TestNewServerCrypto(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -24,7 +24,7 @@ func TestNewServerCrypto(t *testing.T) {
 }
 
 func TestEncryptScalar(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -51,7 +51,7 @@ func TestEncryptScalar(t *testing.T) {
 }
 
 func TestEncryptScalarAt(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -78,7 +78,7 @@ func TestEncryptScalarAt(t *testing.T) {
 }
 
 func TestEncryptVector(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -105,7 +105,7 @@ func TestEncryptVector(t *testing.T) {
 }
 
 func TestEncryptVectorAt(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return

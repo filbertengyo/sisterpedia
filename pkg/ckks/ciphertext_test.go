@@ -7,7 +7,7 @@ import (
 )
 
 func TestCiphertextBinaryMarshal(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return
@@ -57,7 +57,7 @@ func TestCiphertextBinaryMarshal(t *testing.T) {
 }
 
 func TestCiphertextJsonMarshal(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("error when retrieving profile: %v", err)
 		return

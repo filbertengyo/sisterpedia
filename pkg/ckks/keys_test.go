@@ -7,7 +7,7 @@ import (
 )
 
 func TestP1Keygen(t *testing.T) {
-	p1, err := GetProfileByName("p1")
+	p1, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile p1")
 		return
@@ -21,7 +21,7 @@ func TestP1Keygen(t *testing.T) {
 }
 
 func TestP2Keygen(t *testing.T) {
-	p2, err := GetProfileByName("p1")
+	p2, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile p2")
 		return
@@ -35,7 +35,7 @@ func TestP2Keygen(t *testing.T) {
 }
 
 func TestPublicKeysetBinaryMarshalling(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
@@ -73,7 +73,7 @@ func TestPublicKeysetBinaryMarshalling(t *testing.T) {
 }
 
 func TestPublicKeysetJsonMarshalling(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
@@ -111,7 +111,7 @@ func TestPublicKeysetJsonMarshalling(t *testing.T) {
 }
 
 func TestKeysetBinaryMarshalling(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
@@ -148,7 +148,7 @@ func TestKeysetBinaryMarshalling(t *testing.T) {
 }
 
 func TestKeysetJsonMarshalling(t *testing.T) {
-	profile, err := GetProfileByName("p1")
+	profile, err := GetProfile("p1")
 	if err != nil {
 		t.Errorf("unexpected error when retrieving profile")
 		return
