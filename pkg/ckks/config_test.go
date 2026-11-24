@@ -1,6 +1,7 @@
 package ckks
 
 import (
+	"encoding/json"
 	"testing"
 )
 
@@ -71,6 +72,58 @@ func TestP2Security(t *testing.T) {
 
 	if params.LogQP() > 438 {
 		t.Errorf("Profile p2's LogQP value exceeds 438 (%f)", params.LogQP())
+		return
+	}
+}
+
+func TestProfileBinaryMarshal(t *testing.T) {
+	profile, err := GetProfile("p1")
+	if err != nil {
+		t.Errorf("error when retrieving profile: %v", err)
+		return
+	}
+
+	payload, err := profile.MarshalBinary()
+	if err != nil {
+		t.Errorf("error while encoding profile: %v", err)
+		return
+	}
+
+	var decodedProfile Profile
+	err = decodedProfile.UnmarshalBinary(payload)
+	if err != nil {
+		t.Errorf("error while decoding profile: %v", err)
+		return
+	}
+
+	if profile.Name != decodedProfile.Name {
+		t.Error("decoded profile does not match original")
+		return
+	}
+}
+
+func TestProfileJsonMarshal(t *testing.T) {
+	profile, err := GetProfile("p1")
+	if err != nil {
+		t.Errorf("error when retrieving profile: %v", err)
+		return
+	}
+
+	payload, err := json.Marshal(profile)
+	if err != nil {
+		t.Errorf("error while encoding profile: %v", err)
+		return
+	}
+
+	var decodedProfile Profile
+	err = json.Unmarshal(payload, &decodedProfile)
+	if err != nil {
+		t.Errorf("error while decoding profile: %v", err)
+		return
+	}
+
+	if profile.Name != decodedProfile.Name {
+		t.Error("decoded profile does not match original")
 		return
 	}
 }
