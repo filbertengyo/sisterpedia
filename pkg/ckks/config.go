@@ -2,7 +2,7 @@ package ckks
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 
 	"github.com/filbertengyo/sisterpedia/config"
 	ckks "github.com/tuneinsight/lattigo/v6/schemes/ckks"
@@ -98,7 +98,7 @@ func GetProfile(name string) (Profile, error) {
 	profile, ok := profiles.Profiles[name]
 
 	if !ok {
-		return Profile{}, errors.New("ckks profile not found")
+		return Profile{}, fmt.Errorf("ckks profile \"%s\" not found", name)
 	}
 
 	return profile, nil
