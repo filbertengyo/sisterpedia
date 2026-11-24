@@ -48,5 +48,8 @@ func (sc ServerCrypto) EncryptVectorAt(values []float64, level int) (Ciphertext,
 		return Ciphertext{}, err
 	}
 
-	return Ciphertext{value: *ciphertext}, nil
+	return Ciphertext{
+		Profile: sc.PublicKeyset.Profile,
+		value:   *ciphertext,
+	}, nil
 }
