@@ -396,7 +396,7 @@ func (k Keyset) ExportSecret() SecretKey {
 	return k.SK
 }
 
-func GenKeys(profile Profile) (Keyset, error) {
+func (profile Profile) GenKeys() (Keyset, error) {
 	params, err := profile.GetParameters()
 	if err != nil {
 		return Keyset{}, err

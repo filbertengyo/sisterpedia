@@ -13,7 +13,7 @@ func TestP1Keygen(t *testing.T) {
 		return
 	}
 
-	_, err = GenKeys(p1)
+	_, err = p1.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -27,7 +27,7 @@ func TestP2Keygen(t *testing.T) {
 		return
 	}
 
-	_, err = GenKeys(p2)
+	_, err = p2.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -41,7 +41,7 @@ func TestPublicKeysetBinaryMarshalling(t *testing.T) {
 		return
 	}
 
-	keyset, err := GenKeys(profile)
+	keyset, err := profile.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -79,7 +79,7 @@ func TestPublicKeysetJsonMarshalling(t *testing.T) {
 		return
 	}
 
-	keyset, err := GenKeys(profile)
+	keyset, err := profile.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -117,7 +117,7 @@ func TestKeysetBinaryMarshalling(t *testing.T) {
 		return
 	}
 
-	keyset, err := GenKeys(profile)
+	keyset, err := profile.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
@@ -154,7 +154,7 @@ func TestKeysetJsonMarshalling(t *testing.T) {
 		return
 	}
 
-	keyset, err := GenKeys(profile)
+	keyset, err := profile.GenKeys()
 	if err != nil {
 		t.Errorf("error while generating keys: %v", err)
 		return
