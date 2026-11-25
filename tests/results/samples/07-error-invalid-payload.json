@@ -1,0 +1,18 @@
+{
+  "request": {
+    "body": {
+      "enc_amount": "YnVrYW4gY2lwaGVydGV4dCBDS0tTIHNhbWEgc2VrYWxp"
+    },
+    "body_bytes": 61,
+    "method": "POST",
+    "path": "/accounts/u08-p1-546200/topup"
+  },
+  "response": {
+    "body": {
+      "detail": "enc_amount: binary object cannot be loaded: not a ciphertext for this parameter set (33 bytes)",
+      "error": "invalid_payload"
+    },
+    "body_bytes": 134,
+    "status": 400
+  }
+}

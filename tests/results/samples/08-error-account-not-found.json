@@ -1,0 +1,16 @@
+{
+  "request": {
+    "body": null,
+    "body_bytes": 0,
+    "method": "GET",
+    "path": "/accounts/u10-p1-546200/balance"
+  },
+  "response": {
+    "body": {
+      "detail": "account \"u10-p1-546200\" is not activated",
+      "error": "account_not_found"
+    },
+    "body_bytes": 84,
+    "status": 404
+  }
+}

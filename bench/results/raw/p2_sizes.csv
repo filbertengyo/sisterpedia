@@ -1,0 +1,15 @@
+profile,artifact,binary_bytes,base64_bytes
+p2,params,269,360
+p2,secret_key,655416,873888
+p2,public_key,1310840,1747788
+p2,relin_key,5243408,6991212
+p2,ct_balance_fresh,1048942,1398592
+p2,ct_topup_amount,1048942,1398592
+p2,ct_quantity,1048942,1398592
+p2,ct_metadata,1048942,1398592
+p2,ct_total,524622,699496
+p2,ct_balance_after_transact,524622,699496
+p2,json_activate_request,10138036,10138036
+p2,json_topup_request,1398609,1398609
+p2,json_transact_request,2797265,2797265
+p2,json_transact_response,1399071,1399071

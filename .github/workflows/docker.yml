@@ -37,7 +37,11 @@ jobs:
             -H 'Origin: http://localhost:3000' \
             -H 'Access-Control-Request-Method: GET' | tr -d '\r' | grep -i '^access-control-allow-origin' || true)"
           echo "allowed origin response: [$ok]"
-          # TODO(B2.1): enforce once the server implements CORS (ALLOWED_ORIGIN)
+          echo "$ok" | grep -qi "http://localhost:3000" || { echo "CORS header missing for the web origin"; exit 1; }
+          bad="$(curl -sSI -X OPTIONS http://127.0.0.1:8000/healthz \
+            -H 'Origin: http://evil.example' \
+            -H 'Access-Control-Request-Method: GET' | tr -d '\r' | grep -i '^access-control-allow-origin' || true)"
+          [ -z "$bad" ] || { echo "foreign origin must not be allowed: $bad"; exit 1; }
       - name: Logs on failure
         if: failure()
         run: docker compose logs --no-color

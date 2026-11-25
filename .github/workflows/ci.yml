@@ -63,6 +63,7 @@ jobs:
       # Next generates global types (e.g. LayoutProps) into .next/types; tsc needs them
       - run: npx next typegen
       - run: npx tsc --noEmit
+      - run: npm test   # vitest: format/validation/metadata helpers and the mock shop
       - run: npm run build
 
   compliance:

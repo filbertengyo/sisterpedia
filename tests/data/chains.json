@@ -1,0 +1,67 @@
+{
+  "_comment": "Five fixed transaction chains, run identically on every profile. Each balance change is compared with an exact math/big reference.",
+  "chains": [
+    {
+      "name": "C1-campuran",
+      "description": "Spec reference example followed by mixed purchases and a decimal top up",
+      "ops": [
+        { "op": "topup", "amount": "100000" },
+        { "op": "transact", "product_id": "P001", "quantity": 2, "discount_code": "COMBO" },
+        { "op": "transact", "product_id": "P002", "quantity": 1, "discount_code": "NONE" },
+        { "op": "topup", "amount": "2500.75" },
+        { "op": "transact", "product_id": "P004", "quantity": 3, "discount_code": "DISC10" },
+        { "op": "transact", "product_id": "P005", "quantity": 4, "discount_code": "FLAT500" }
+      ]
+    },
+    {
+      "name": "C2-desimal",
+      "description": "Small and decimal top ups between discounted and undiscounted purchases",
+      "ops": [
+        { "op": "topup", "amount": "50000" },
+        { "op": "topup", "amount": "0.01" },
+        { "op": "transact", "product_id": "P003", "quantity": 1, "discount_code": "NONE" },
+        { "op": "transact", "product_id": "P001", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "12345.67" },
+        { "op": "transact", "product_id": "P002", "quantity": 2, "discount_code": "COMBO" }
+      ]
+    },
+    {
+      "name": "C3-nilai-besar",
+      "description": "Large balances and bills close to the safe range (+-500000)",
+      "ops": [
+        { "op": "topup", "amount": "250000" },
+        { "op": "transact", "product_id": "P003", "quantity": 10, "discount_code": "COMBO" },
+        { "op": "transact", "product_id": "P005", "quantity": 20, "discount_code": "NONE" },
+        { "op": "topup", "amount": "99999.99" },
+        { "op": "transact", "product_id": "P004", "quantity": 5, "discount_code": "FLAT500" }
+      ]
+    },
+    {
+      "name": "C4-panjang",
+      "description": "Twenty alternating operations to observe error accumulation (balance goes negative)",
+      "ops": [
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "topup", "amount": "1000.5" }, { "op": "transact", "product_id": "P005", "quantity": 1, "discount_code": "DISC10" }
+      ]
+    },
+    {
+      "name": "C5-saldo-negatif",
+      "description": "Purchase above the balance (negative), then recovery with a top up and more discounted purchases",
+      "ops": [
+        { "op": "topup", "amount": "5000" },
+        { "op": "transact", "product_id": "P001", "quantity": 1, "discount_code": "NONE" },
+        { "op": "topup", "amount": "20000" },
+        { "op": "transact", "product_id": "P002", "quantity": 1, "discount_code": "DISC10" },
+        { "op": "transact", "product_id": "P004", "quantity": 1, "discount_code": "COMBO" }
+      ]
+    }
+  ]
+}

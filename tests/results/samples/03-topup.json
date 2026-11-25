@@ -1,0 +1,18 @@
+{
+  "request": {
+    "body": {
+      "enc_amount": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]"
+    },
+    "body_bytes": 524773,
+    "method": "POST",
+    "path": "/accounts/u04-p1-546200/topup"
+  },
+  "response": {
+    "body": {
+      "enc_balance": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+      "user_id": "u04-p1-546200"
+    },
+    "body_bytes": 524801,
+    "status": 200
+  }
+}

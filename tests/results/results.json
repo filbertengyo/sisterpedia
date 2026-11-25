@@ -1,0 +1,1177 @@
+{
+  "chains": [
+    {
+      "Profile": "p1",
+      "Chain": "C1-campuran",
+      "Description": "Spec reference example followed by mixed purchases and a decimal top up",
+      "Ops": 6,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 3,
+      "MaxAbs": 0.00003715096681844443,
+      "MaxRel": 1.2559173076887574e-9,
+      "Pass": true
+    },
+    {
+      "Profile": "p1",
+      "Chain": "C2-desimal",
+      "Description": "Small and decimal top ups between discounted and undiscounted purchases",
+      "Ops": 6,
+      "Topups": 3,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.000045666500518564135,
+      "MaxRel": 6.435817359092312e-9,
+      "Pass": true
+    },
+    {
+      "Profile": "p1",
+      "Chain": "C3-nilai-besar",
+      "Description": "Large balances and bills close to the safe range (+-500000)",
+      "Ops": 5,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.00009830991621129215,
+      "MaxRel": 1.3142833787631908e-8,
+      "Pass": true
+    },
+    {
+      "Profile": "p1",
+      "Chain": "C4-panjang",
+      "Description": "Twenty alternating operations to observe error accumulation (balance goes negative)",
+      "Ops": 20,
+      "Topups": 10,
+      "NoDiscount": 0,
+      "WithDiscnt": 10,
+      "MaxAbs": 0.000017062295228242874,
+      "MaxRel": 1.9575550521192116e-9,
+      "Pass": true
+    },
+    {
+      "Profile": "p1",
+      "Chain": "C5-saldo-negatif",
+      "Description": "Purchase above the balance (negative), then recovery with a top up and more discounted purchases",
+      "Ops": 5,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.000002942302671726793,
+      "MaxRel": 8.553896577723208e-10,
+      "Pass": true
+    },
+    {
+      "Profile": "p2",
+      "Chain": "C1-campuran",
+      "Description": "Spec reference example followed by mixed purchases and a decimal top up",
+      "Ops": 6,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 3,
+      "MaxAbs": 0.00009903644968289882,
+      "MaxRel": 4.5637339577156925e-9,
+      "Pass": true
+    },
+    {
+      "Profile": "p2",
+      "Chain": "C2-desimal",
+      "Description": "Small and decimal top ups between discounted and undiscounted purchases",
+      "Ops": 6,
+      "Topups": 3,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.00009850086855294648,
+      "MaxRel": 1.3881808163973923e-8,
+      "Pass": true
+    },
+    {
+      "Profile": "p2",
+      "Chain": "C3-nilai-besar",
+      "Description": "Large balances and bills close to the safe range (+-500000)",
+      "Ops": 5,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.0001907621242571622,
+      "MaxRel": 1.5399077970609402e-8,
+      "Pass": true
+    },
+    {
+      "Profile": "p2",
+      "Chain": "C4-panjang",
+      "Description": "Twenty alternating operations to observe error accumulation (balance goes negative)",
+      "Ops": 20,
+      "Topups": 10,
+      "NoDiscount": 0,
+      "WithDiscnt": 10,
+      "MaxAbs": 0.00003373747313162312,
+      "MaxRel": 6.7816015688658485e-9,
+      "Pass": true
+    },
+    {
+      "Profile": "p2",
+      "Chain": "C5-saldo-negatif",
+      "Description": "Purchase above the balance (negative), then recovery with a top up and more discounted purchases",
+      "Ops": 5,
+      "Topups": 2,
+      "NoDiscount": 1,
+      "WithDiscnt": 2,
+      "MaxAbs": 0.000013973003660794348,
+      "MaxRel": 1.0123981155629735e-8,
+      "Pass": true
+    }
+  ],
+  "generated_at": "2026-11-25T09:09:06Z",
+  "library": "github.com/tuneinsight/lattigo/v6 v6.2.0",
+  "profiles": [
+    "p1",
+    "p2"
+  ],
+  "records": [
+    {
+      "id": "U01",
+      "category": "Aktivasi dan saldo awal",
+      "profile": "p1",
+      "input": "user_id=u01-p1-546200, saldo awal Enc(0)",
+      "steps": [
+        "Klien membangkitkan sk, pk, rlk (p1) dan mengenkripsi 0; POST /accounts tanpa secret key -\u003e 201",
+        "GET /accounts/u01-p1-546200/balance -\u003e ciphertext; dekripsi di klien"
+      ],
+      "expected": "201 Created, CheckBalance didekripsi mendekati 0 (e_abs \u003c= 0.01, e_rel n/a)",
+      "actual": "saldo mentah -6.538904584e-10 (e_abs 6.539e-10, e_rel n/a)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo dari respons Activate",
+          "expected": "0.00",
+          "actual_raw": -6.538904583775625e-10,
+          "e_abs": 6.538904583775625e-10,
+          "e_rel": "n/a",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo dari CheckBalance",
+          "expected": "0.00",
+          "actual_raw": -6.538904583775625e-10,
+          "e_abs": 6.538904583775625e-10,
+          "e_rel": "n/a",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U01",
+      "category": "Aktivasi dan saldo awal",
+      "profile": "p2",
+      "input": "user_id=u01-p2-546200, saldo awal Enc(0)",
+      "steps": [
+        "Klien membangkitkan sk, pk, rlk (p2) dan mengenkripsi 0; POST /accounts tanpa secret key -\u003e 201",
+        "GET /accounts/u01-p2-546200/balance -\u003e ciphertext; dekripsi di klien"
+      ],
+      "expected": "201 Created, CheckBalance didekripsi mendekati 0 (e_abs \u003c= 0.01, e_rel n/a)",
+      "actual": "saldo mentah -1.045642559e-09 (e_abs 1.046e-09, e_rel n/a)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo dari respons Activate",
+          "expected": "0.00",
+          "actual_raw": -1.0456425593959842e-9,
+          "e_abs": 1.0456425593959842e-9,
+          "e_rel": "n/a",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo dari CheckBalance",
+          "expected": "0.00",
+          "actual_raw": -1.0456425593959842e-9,
+          "e_abs": 1.0456425593959842e-9,
+          "e_rel": "n/a",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U02",
+      "category": "Persistensi kunci dan sesi",
+      "profile": "p1",
+      "input": "user_id=u02-p1-546200; topup 75000; beli P001 x2 COMBO; ekspor kunci ke params.json/secret.key/public.key/relin.key",
+      "steps": [
+        "Aktivasi, topup 75000, transaksi P001 x2 COMBO; ekspor kunci ke berkas: params.json, public.key, relin.key, secret.key",
+        "Server dihentikan (PID 5792) dan dijalankan ulang (PID 19700) dengan basis data SQLite yang sama",
+        "Klien dijalankan ulang: kunci dimuat dari berkas (validasi pasangan kunci), tanpa keygen; public key identik: true",
+        "CheckBalance dan GetTransact setelah restart; riwayat: 1 entri"
+      ],
+      "expected": "Setelah server dan klien dijalankan ulang serta kunci lama diimpor: saldo 53000 dan 1 riwayat tetap terdekripsi; tidak ada pembangkitan kunci baru",
+      "actual": "saldo 53000.000003, riwayat 1 entri (true), kunci sama: true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah restart",
+          "expected": "53000.00",
+          "actual_raw": 53000.00000333145,
+          "e_abs": 0.0000033314499887637794,
+          "e_rel": "6.286e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "total riwayat setelah restart",
+          "expected": "22000.00",
+          "actual_raw": 21999.999996670274,
+          "e_abs": 0.000003329725586809218,
+          "e_rel": "1.514e-10",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U02",
+      "category": "Persistensi kunci dan sesi",
+      "profile": "p2",
+      "input": "user_id=u02-p2-546200; topup 75000; beli P001 x2 COMBO; ekspor kunci ke params.json/secret.key/public.key/relin.key",
+      "steps": [
+        "Aktivasi, topup 75000, transaksi P001 x2 COMBO; ekspor kunci ke berkas: params.json, public.key, relin.key, secret.key",
+        "Server dihentikan (PID 19700) dan dijalankan ulang (PID 20184) dengan basis data SQLite yang sama",
+        "Klien dijalankan ulang: kunci dimuat dari berkas (validasi pasangan kunci), tanpa keygen; public key identik: true",
+        "CheckBalance dan GetTransact setelah restart; riwayat: 1 entri"
+      ],
+      "expected": "Setelah server dan klien dijalankan ulang serta kunci lama diimpor: saldo 53000 dan 1 riwayat tetap terdekripsi; tidak ada pembangkitan kunci baru",
+      "actual": "saldo 52999.999895, riwayat 1 entri (true), kunci sama: true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah restart",
+          "expected": "53000.00",
+          "actual_raw": 52999.99989522739,
+          "e_abs": 0.00010477261093910784,
+          "e_rel": "1.977e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "total riwayat setelah restart",
+          "expected": "22000.00",
+          "actual_raw": 22000.000104771418,
+          "e_abs": 0.00010477141768205911,
+          "e_rel": "4.762e-09",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U03",
+      "category": "Isolasi antarpengguna",
+      "profile": "p1",
+      "input": "akun A=u03a-p1-546200 topup 12345.67; akun B=u03b-p1-546200 topup 500 lalu beli P005 x1",
+      "steps": [
+        "Dua akun dengan pasangan kunci berbeda; transaksi masing-masing",
+        "Ciphertext saldo A didekripsi dengan sk B: hasil 1.63105e+31"
+      ],
+      "expected": "Saldo A dan B terpisah dan benar dengan kuncinya masing-masing; sk B pada ciphertext A tidak menghasilkan 12345.67",
+      "actual": "A=12345.670000, B=-4500.000003; sk B pada ciphertext A -\u003e 1.63105e+31 (salah, tanpa pesan galat)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo A dengan sk A",
+          "expected": "12345.67",
+          "actual_raw": 12345.669999999722,
+          "e_abs": 2.782326191663742e-10,
+          "e_rel": "2.254e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo B dengan sk B",
+          "expected": "-4500.00",
+          "actual_raw": -4500.000002974546,
+          "e_abs": 0.000002974546077894047,
+          "e_rel": "6.610e-10",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Dekripsi dengan kunci yang salah tidak menimbulkan galat dari pustaka; hasilnya angka acak (e_abs 1.631e+31 terhadap 12345.67)."
+      ]
+    },
+    {
+      "id": "U03",
+      "category": "Isolasi antarpengguna",
+      "profile": "p2",
+      "input": "akun A=u03a-p2-546200 topup 12345.67; akun B=u03b-p2-546200 topup 500 lalu beli P005 x1",
+      "steps": [
+        "Dua akun dengan pasangan kunci berbeda; transaksi masing-masing",
+        "Ciphertext saldo A didekripsi dengan sk B: hasil 1.4906e+43"
+      ],
+      "expected": "Saldo A dan B terpisah dan benar dengan kuncinya masing-masing; sk B pada ciphertext A tidak menghasilkan 12345.67",
+      "actual": "A=12345.670000, B=-4499.999999; sk B pada ciphertext A -\u003e 1.4906e+43 (salah, tanpa pesan galat)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo A dengan sk A",
+          "expected": "12345.67",
+          "actual_raw": 12345.669999996364,
+          "e_abs": 3.6360870581120253e-9,
+          "e_rel": "2.945e-13",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo B dengan sk B",
+          "expected": "-4500.00",
+          "actual_raw": -4499.99999873223,
+          "e_abs": 0.0000012677701306529343,
+          "e_rel": "2.817e-10",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Dekripsi dengan kunci yang salah tidak menimbulkan galat dari pustaka; hasilnya angka acak (e_abs 1.491e+43 terhadap 12345.67)."
+      ]
+    },
+    {
+      "id": "U04",
+      "category": "Topup berulang",
+      "profile": "p1",
+      "input": "topup berturut-turut: 100000, 2500.75, 0.5, 33333.33, 1, 12345.67",
+      "steps": [
+        "6 kali POST /accounts/u04-p1-546200/topup dengan Enc(nominal); dekripsi saldo setelah setiap langkah"
+      ],
+      "expected": "Saldo hasil dekripsi pada setiap langkah = jumlah acuan (e_abs \u003c= 0.01)",
+      "actual": "saldo akhir 148181.25000000 (acuan 148181.25), max e_abs 1.630e-09",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah topup #1 (+100000)",
+          "expected": "100000.00",
+          "actual_raw": 100000.00000000067,
+          "e_abs": 6.693881005048752e-10,
+          "e_rel": "6.694e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #2 (+2500.75)",
+          "expected": "102500.75",
+          "actual_raw": 102500.75000000076,
+          "e_abs": 7.566995918750763e-10,
+          "e_rel": "7.382e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #3 (+0.5)",
+          "expected": "102501.25",
+          "actual_raw": 102501.24999999962,
+          "e_abs": 3.7834979593753815e-10,
+          "e_rel": "3.691e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #4 (+33333.33)",
+          "expected": "135834.58",
+          "actual_raw": 135834.58000000054,
+          "e_abs": 5.401670932769775e-10,
+          "e_rel": "3.977e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #5 (+1)",
+          "expected": "135835.58",
+          "actual_raw": 135835.5800000004,
+          "e_abs": 3.9464794099330904e-10,
+          "e_rel": "2.905e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #6 (+12345.67)",
+          "expected": "148181.25",
+          "actual_raw": 148181.25000000163,
+          "e_abs": 1.6298145055770874e-9,
+          "e_rel": "1.100e-14",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U04",
+      "category": "Topup berulang",
+      "profile": "p2",
+      "input": "topup berturut-turut: 100000, 2500.75, 0.5, 33333.33, 1, 12345.67",
+      "steps": [
+        "6 kali POST /accounts/u04-p2-546200/topup dengan Enc(nominal); dekripsi saldo setelah setiap langkah"
+      ],
+      "expected": "Saldo hasil dekripsi pada setiap langkah = jumlah acuan (e_abs \u003c= 0.01)",
+      "actual": "saldo akhir 148181.25000000 (acuan 148181.25), max e_abs 3.507e-09",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah topup #1 (+100000)",
+          "expected": "100000.00",
+          "actual_raw": 100000.0000000035,
+          "e_abs": 3.5070115700364113e-9,
+          "e_rel": "3.507e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #2 (+2500.75)",
+          "expected": "102500.75",
+          "actual_raw": 102500.75000000349,
+          "e_abs": 3.4924596548080444e-9,
+          "e_rel": "3.407e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #3 (+0.5)",
+          "expected": "102501.25",
+          "actual_raw": 102501.2500000032,
+          "e_abs": 3.2014213502407074e-9,
+          "e_rel": "3.123e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #4 (+33333.33)",
+          "expected": "135834.58",
+          "actual_raw": 135834.58000000226,
+          "e_abs": 2.257293090224266e-9,
+          "e_rel": "1.662e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #5 (+1)",
+          "expected": "135835.58",
+          "actual_raw": 135835.58000000182,
+          "e_abs": 1.8207356333732606e-9,
+          "e_rel": "1.340e-14",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah topup #6 (+12345.67)",
+          "expected": "148181.25",
+          "actual_raw": 148181.2500000014,
+          "e_abs": 1.3969838619232178e-9,
+          "e_rel": "9.428e-15",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U05",
+      "category": "Transaksi dan riwayat",
+      "profile": "p1",
+      "input": "topup 100000; P002 x1 NONE (tanpa diskon); P003 x2 DISC10 (diskon persentase); P004 x1 FLAT500 (potongan tetap); P001 x2 COMBO (kombinasi (acuan spesifikasi: 22000))",
+      "steps": [
+        "Topup lalu 4 transaksi (POST /accounts/u05-p1-546200/transactions; product_id dan discount_code terbuka, kuantitas \u0026 metadata terenkripsi)",
+        "GET /accounts/u05-p1-546200/transactions: 4 entri, metadata dibulatkan ke bilangan bulat terdekat (toleransi 0.25)"
+      ],
+      "expected": "Tagihan t=(p*q*(1-d))-k dan saldo sesuai acuan di setiap langkah; GetTransact memuat semua transaksi dengan metadata (produk, qty, diskon) dan total yang benar",
+      "actual": "4 transaksi tercatat, metadata cocok: true, max e_abs 4.529e-05",
+      "pass": true,
+      "measures": [
+        {
+          "label": "tagihan P002 x1 NONE",
+          "expected": "15000.00",
+          "actual_raw": 14999.99998979632,
+          "e_abs": 0.000010203679266851395,
+          "e_rel": "6.802e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #1",
+          "expected": "85000.00",
+          "actual_raw": 85000.00001020118,
+          "e_abs": 0.00001020118361338973,
+          "e_rel": "1.200e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P003 x2 DISC10",
+          "expected": "31500.00",
+          "actual_raw": 31500.000045289897,
+          "e_abs": 0.000045289896661415696,
+          "e_rel": "1.438e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #2",
+          "expected": "53500.00",
+          "actual_raw": 53499.99996491127,
+          "e_abs": 0.000035088727599941194,
+          "e_rel": "6.559e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P004 x1 FLAT500",
+          "expected": "8500.00",
+          "actual_raw": 8499.999986111514,
+          "e_abs": 0.000013888486137147993,
+          "e_rel": "1.634e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #3",
+          "expected": "45000.00",
+          "actual_raw": 44999.999978799766,
+          "e_abs": 0.000021200234186835587,
+          "e_rel": "4.711e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P001 x2 COMBO",
+          "expected": "22000.00",
+          "actual_raw": 22000.00001857566,
+          "e_abs": 0.000018575661670183763,
+          "e_rel": "8.443e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #4",
+          "expected": "23000.00",
+          "actual_raw": 22999.9999602241,
+          "e_abs": 0.00003977589949499816,
+          "e_rel": "1.729e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #1 total (P002 x1 NONE, metadata mentah 2.000000/1.000000/-0.000000)",
+          "expected": "15000.00",
+          "actual_raw": 14999.99998979632,
+          "e_abs": 0.000010203679266851395,
+          "e_rel": "6.802e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #2 total (P003 x2 DISC10, metadata mentah 3.000000/2.000000/1.000000)",
+          "expected": "31500.00",
+          "actual_raw": 31500.000045289897,
+          "e_abs": 0.000045289896661415696,
+          "e_rel": "1.438e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #3 total (P004 x1 FLAT500, metadata mentah 4.000000/1.000000/2.000000)",
+          "expected": "8500.00",
+          "actual_raw": 8499.999986111514,
+          "e_abs": 0.000013888486137147993,
+          "e_rel": "1.634e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #4 total (P001 x2 COMBO, metadata mentah 1.000000/2.000000/3.000000)",
+          "expected": "22000.00",
+          "actual_raw": 22000.00001857566,
+          "e_abs": 0.000018575661670183763,
+          "e_rel": "8.443e-10",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U05",
+      "category": "Transaksi dan riwayat",
+      "profile": "p2",
+      "input": "topup 100000; P002 x1 NONE (tanpa diskon); P003 x2 DISC10 (diskon persentase); P004 x1 FLAT500 (potongan tetap); P001 x2 COMBO (kombinasi (acuan spesifikasi: 22000))",
+      "steps": [
+        "Topup lalu 4 transaksi (POST /accounts/u05-p2-546200/transactions; product_id dan discount_code terbuka, kuantitas \u0026 metadata terenkripsi)",
+        "GET /accounts/u05-p2-546200/transactions: 4 entri, metadata dibulatkan ke bilangan bulat terdekat (toleransi 0.25)"
+      ],
+      "expected": "Tagihan t=(p*q*(1-d))-k dan saldo sesuai acuan di setiap langkah; GetTransact memuat semua transaksi dengan metadata (produk, qty, diskon) dan total yang benar",
+      "actual": "4 transaksi tercatat, metadata cocok: true, max e_abs 7.863e-06",
+      "pass": true,
+      "measures": [
+        {
+          "label": "tagihan P002 x1 NONE",
+          "expected": "15000.00",
+          "actual_raw": 15000.00000096879,
+          "e_abs": 9.68790118349716e-7,
+          "e_rel": "6.459e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #1",
+          "expected": "85000.00",
+          "actual_raw": 84999.9999990304,
+          "e_abs": 9.695941116660833e-7,
+          "e_rel": "1.141e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P003 x2 DISC10",
+          "expected": "31500.00",
+          "actual_raw": 31499.99999646082,
+          "e_abs": 0.000003539178578648716,
+          "e_rel": "1.124e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #2",
+          "expected": "53500.00",
+          "actual_raw": 53500.00000256959,
+          "e_abs": 0.000002569591742940247,
+          "e_rel": "4.803e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P004 x1 FLAT500",
+          "expected": "8500.00",
+          "actual_raw": 8500.000007863131,
+          "e_abs": 0.000007863131031626835,
+          "e_rel": "9.251e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #3",
+          "expected": "45000.00",
+          "actual_raw": 44999.99999470646,
+          "e_abs": 0.0000052935429266653955,
+          "e_rel": "1.176e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "tagihan P001 x2 COMBO",
+          "expected": "22000.00",
+          "actual_raw": 21999.999996076796,
+          "e_abs": 0.0000039232036215253174,
+          "e_rel": "1.783e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo setelah transaksi #4",
+          "expected": "23000.00",
+          "actual_raw": 22999.999998629664,
+          "e_abs": 0.000001370335667161271,
+          "e_rel": "5.958e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #1 total (P002 x1 NONE, metadata mentah 2.000000/1.000000/0.000000)",
+          "expected": "15000.00",
+          "actual_raw": 15000.00000096879,
+          "e_abs": 9.68790118349716e-7,
+          "e_rel": "6.459e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #2 total (P003 x2 DISC10, metadata mentah 3.000000/2.000000/1.000000)",
+          "expected": "31500.00",
+          "actual_raw": 31499.99999646082,
+          "e_abs": 0.000003539178578648716,
+          "e_rel": "1.124e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #3 total (P004 x1 FLAT500, metadata mentah 4.000000/1.000000/2.000000)",
+          "expected": "8500.00",
+          "actual_raw": 8500.000007863131,
+          "e_abs": 0.000007863131031626835,
+          "e_rel": "9.251e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "riwayat #4 total (P001 x2 COMBO, metadata mentah 1.000000/2.000000/3.000000)",
+          "expected": "22000.00",
+          "actual_raw": 21999.999996076796,
+          "e_abs": 0.0000039232036215253174,
+          "e_rel": "1.783e-10",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U06",
+      "category": "Saldo tidak mencukupi",
+      "profile": "p1",
+      "input": "topup 10000; beli P003 x1 NONE (tagihan di atas saldo)",
+      "steps": [
+        "POST transaksi diterima (201) meskipun tagihan 17500 \u003e saldo 10000",
+        "Klien mendekripsi saldo: -7500.000010 -\u003e negatif terdeteksi: true (GUI menampilkan 'Saldo tidak mencukupi')"
+      ],
+      "expected": "Server tetap mengurangi saldo (tanpa pemeriksaan homomorfik); klien mendeteksi saldo negatif setelah dekripsi",
+      "actual": "transaksi diterima, saldo -7500.000010, negatif terdeteksi: true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "tagihan",
+          "expected": "17500.00",
+          "actual_raw": 17500.000010071413,
+          "e_abs": 0.000010071413271361962,
+          "e_rel": "5.755e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo akhir",
+          "expected": "-7500.00",
+          "actual_raw": -7500.00001007319,
+          "e_abs": 0.000010073190424009226,
+          "e_rel": "1.343e-09",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U06",
+      "category": "Saldo tidak mencukupi",
+      "profile": "p2",
+      "input": "topup 10000; beli P003 x1 NONE (tagihan di atas saldo)",
+      "steps": [
+        "POST transaksi diterima (201) meskipun tagihan 17500 \u003e saldo 10000",
+        "Klien mendekripsi saldo: -7499.999998 -\u003e negatif terdeteksi: true (GUI menampilkan 'Saldo tidak mencukupi')"
+      ],
+      "expected": "Server tetap mengurangi saldo (tanpa pemeriksaan homomorfik); klien mendeteksi saldo negatif setelah dekripsi",
+      "actual": "transaksi diterima, saldo -7499.999998, negatif terdeteksi: true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "tagihan",
+          "expected": "17500.00",
+          "actual_raw": 17499.99999767391,
+          "e_abs": 0.0000023260909074451774,
+          "e_rel": "1.329e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "saldo akhir",
+          "expected": "-7500.00",
+          "actual_raw": -7499.999997675809,
+          "e_abs": 0.000002324190973013174,
+          "e_rel": "3.099e-10",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U07",
+      "category": "Batas kedalaman perkalian",
+      "profile": "p1",
+      "input": "x = 1.5 dikalikan berulang dengan Enc(1.5) (ciphertext x ciphertext + relin + rescale) sebanyak 3 kali; level maks 2",
+      "steps": [
+        "Enc(1.5): level 2, skala 2^40.0000",
+        "perkalian #1 mul -\u003e level 2, skala 2^80.0000",
+        "perkalian #1 relin -\u003e level 2, skala 2^80.0000",
+        "perkalian #1 rescale -\u003e level 1, skala 2^40.0000",
+        "perkalian #2 mul -\u003e level 1, skala 2^80.0000",
+        "perkalian #2 relin -\u003e level 1, skala 2^80.0000",
+        "perkalian #2 rescale -\u003e level 0, skala 2^40.0000",
+        "perkalian #3 mul -\u003e level 0, skala 2^100.0000",
+        "perkalian #3 relin -\u003e level 0, skala 2^100.0000",
+        "perkalian #3 DITOLAK pustaka: homomorphic evaluation failed: rescale: cannot Rescale: input Ciphertext level is too low",
+        "tanpa rescale, skala 2^100.0 melebihi q0 (60 bit): dekripsi -1.31311e-11, acuan 5.062500"
+      ],
+      "expected": "Perkalian ke-1..2 berhasil dalam toleransi; perkalian ke-3 melewati kapasitas: pustaka menolak rescale atau hasil di luar toleransi",
+      "actual": "2 perkalian berhasil dalam toleransi; perkalian ke-3: ditolak pustaka=true, hasil di luar toleransi=true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "perkalian #1 (level 1)",
+          "expected": "2.25",
+          "actual_raw": 2.249999999937663,
+          "e_abs": 6.233680238665329e-11,
+          "e_rel": "2.771e-11",
+          "within_tolerance": true
+        },
+        {
+          "label": "perkalian #2 (level 0)",
+          "expected": "3.38",
+          "actual_raw": 3.3749999988572688,
+          "e_abs": 1.1427312429646008e-9,
+          "e_rel": "3.386e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "perkalian #3 tanpa rescale (level 0, skala 2^100.0)",
+          "expected": "5.06",
+          "actual_raw": -1.3131092651791227e-11,
+          "e_abs": 5.062500000013131,
+          "e_rel": "1.000e+00",
+          "within_tolerance": false
+        }
+      ],
+      "notes": [
+        "Tanpa bootstrapping, setiap perkalian+rescale menghabiskan satu level; profil p1 mendukung tepat 2 perkalian beruntun (tagihan butuh 2)."
+      ]
+    },
+    {
+      "id": "U07",
+      "category": "Batas kedalaman perkalian",
+      "profile": "p2",
+      "input": "x = 1.5 dikalikan berulang dengan Enc(1.5) (ciphertext x ciphertext + relin + rescale) sebanyak 4 kali; level maks 3",
+      "steps": [
+        "Enc(1.5): level 3, skala 2^40.0000",
+        "perkalian #1 mul -\u003e level 3, skala 2^80.0000",
+        "perkalian #1 relin -\u003e level 3, skala 2^80.0000",
+        "perkalian #1 rescale -\u003e level 2, skala 2^40.0000",
+        "perkalian #2 mul -\u003e level 2, skala 2^80.0000",
+        "perkalian #2 relin -\u003e level 2, skala 2^80.0000",
+        "perkalian #2 rescale -\u003e level 1, skala 2^40.0000",
+        "perkalian #3 mul -\u003e level 1, skala 2^80.0000",
+        "perkalian #3 relin -\u003e level 1, skala 2^80.0000",
+        "perkalian #3 rescale -\u003e level 0, skala 2^40.0000",
+        "perkalian #4 mul -\u003e level 0, skala 2^100.0000",
+        "perkalian #4 relin -\u003e level 0, skala 2^100.0000",
+        "perkalian #4 DITOLAK pustaka: homomorphic evaluation failed: rescale: cannot Rescale: input Ciphertext level is too low",
+        "tanpa rescale, skala 2^100.0 melebihi q0 (60 bit): dekripsi -4.57811e-11, acuan 7.593750"
+      ],
+      "expected": "Perkalian ke-1..3 berhasil dalam toleransi; perkalian ke-4 melewati kapasitas: pustaka menolak rescale atau hasil di luar toleransi",
+      "actual": "3 perkalian berhasil dalam toleransi; perkalian ke-4: ditolak pustaka=true, hasil di luar toleransi=true",
+      "pass": true,
+      "measures": [
+        {
+          "label": "perkalian #1 (level 2)",
+          "expected": "2.25",
+          "actual_raw": 2.249999998659362,
+          "e_abs": 1.3406378229774418e-9,
+          "e_rel": "5.958e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "perkalian #2 (level 1)",
+          "expected": "3.38",
+          "actual_raw": 3.3750000021062614,
+          "e_abs": 2.106261387524455e-9,
+          "e_rel": "6.241e-10",
+          "within_tolerance": true
+        },
+        {
+          "label": "perkalian #3 (level 0)",
+          "expected": "5.06",
+          "actual_raw": 5.062500008057501,
+          "e_abs": 8.057501332814354e-9,
+          "e_rel": "1.592e-09",
+          "within_tolerance": true
+        },
+        {
+          "label": "perkalian #4 tanpa rescale (level 0, skala 2^100.0)",
+          "expected": "7.59",
+          "actual_raw": -4.578108663011697e-11,
+          "e_abs": 7.593750000045781,
+          "e_rel": "1.000e+00",
+          "within_tolerance": false
+        }
+      ],
+      "notes": [
+        "Tanpa bootstrapping, setiap perkalian+rescale menghabiskan satu level; profil p2 mendukung tepat 3 perkalian beruntun (tagihan butuh 2)."
+      ]
+    },
+    {
+      "id": "U08",
+      "category": "Muatan dan ciphertext tidak valid",
+      "profile": "p1",
+      "input": "JSON rusak, tipe salah, field tak dikenal, Base64 tidak valid, biner tak dapat dimuat, ciphertext profil lain, skala salah, secret key sebagai ciphertext; lalu ciphertext yang diubah 1 byte",
+      "steps": [
+        "a1 JSON rusak -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a2 tipe salah (angka) -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a3 field tak dikenal (amount) -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a4 field wajib hilang -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "b1 Base64 tidak valid -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "b2 Base64 kosong -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c1 biner acak -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c2 ciphertext terpotong -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c3 ciphertext profil p2 -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c4 skala 2^30 (konteks salah) -\u003e HTTP 400 context_mismatch (diharapkan 400 context_mismatch) OK",
+        "c5 secret key sebagai ciphertext -\u003e HTTP 400 secret_key_rejected (diharapkan 400 secret_key_rejected) OK",
+        "Ciphertext saldo byte-per-byte sama: true; jumlah riwayat 1 -\u003e 1",
+        "d: akun terpisah u08d-p1-546200, Enc(500) diubah 1 byte (koefisien) -\u003e diterima server: true; saldo didekripsi -1.11923e+31 (acuan 1500)"
+      ],
+      "expected": "Kasus a-c: HTTP 400 dengan kode sesuai kontrak dan saldo/riwayat tidak berubah; kasus d: ciphertext termodifikasi tetap diterima (tidak terdeteksi) dan saldo menjadi salah",
+      "actual": "a-c: 11/11 kasus sesuai, data tidak berubah: true; d: diterima=true, saldo salah (e_abs 1.119e+31)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah semua penolakan",
+          "expected": "-4000.00",
+          "actual_raw": -3999.9999998494613,
+          "e_abs": 1.505386535427533e-7,
+          "e_rel": "3.763e-11",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Validasi format hanya memeriksa struktur, level, dan skala; perubahan isi ciphertext yang tetap valid tidak terdeteksi karena CKKS tidak menyediakan autentikasi/integritas (diperlukan MAC/tanda tangan di luar CKKS)."
+      ]
+    },
+    {
+      "id": "U08",
+      "category": "Muatan dan ciphertext tidak valid",
+      "profile": "p2",
+      "input": "JSON rusak, tipe salah, field tak dikenal, Base64 tidak valid, biner tak dapat dimuat, ciphertext profil lain, skala salah, secret key sebagai ciphertext; lalu ciphertext yang diubah 1 byte",
+      "steps": [
+        "a1 JSON rusak -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a2 tipe salah (angka) -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a3 field tak dikenal (amount) -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "a4 field wajib hilang -\u003e HTTP 400 invalid_json (diharapkan 400 invalid_json) OK",
+        "b1 Base64 tidak valid -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "b2 Base64 kosong -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c1 biner acak -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c2 ciphertext terpotong -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c3 ciphertext profil p1 -\u003e HTTP 400 invalid_payload (diharapkan 400 invalid_payload) OK",
+        "c4 skala 2^30 (konteks salah) -\u003e HTTP 400 context_mismatch (diharapkan 400 context_mismatch) OK",
+        "c5 secret key sebagai ciphertext -\u003e HTTP 400 secret_key_rejected (diharapkan 400 secret_key_rejected) OK",
+        "Ciphertext saldo byte-per-byte sama: true; jumlah riwayat 1 -\u003e 1",
+        "d: akun terpisah u08d-p2-546200, Enc(500) diubah 1 byte (koefisien) -\u003e diterima server: true; saldo didekripsi -3.04324e+43 (acuan 1500)"
+      ],
+      "expected": "Kasus a-c: HTTP 400 dengan kode sesuai kontrak dan saldo/riwayat tidak berubah; kasus d: ciphertext termodifikasi tetap diterima (tidak terdeteksi) dan saldo menjadi salah",
+      "actual": "a-c: 11/11 kasus sesuai, data tidak berubah: true; d: diterima=true, saldo salah (e_abs 3.043e+43)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo setelah semua penolakan",
+          "expected": "-4000.00",
+          "actual_raw": -3999.9999971011607,
+          "e_abs": 0.0000028988392841711175,
+          "e_rel": "7.247e-10",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Validasi format hanya memeriksa struktur, level, dan skala; perubahan isi ciphertext yang tetap valid tidak terdeteksi karena CKKS tidak menyediakan autentikasi/integritas (diperlukan MAC/tanda tangan di luar CKKS)."
+      ]
+    },
+    {
+      "id": "U09",
+      "category": "Kunci evaluasi berbeda",
+      "profile": "p1",
+      "input": "Evaluasi tagihan P001 x2 COMBO (acuan 22000) dengan pk akun A tetapi rlk dari pasangan kunci B",
+      "steps": [
+        "Evaluasi terisolasi dengan rlk B: galat pustaka=false; hasil dekripsi sk A = 3.73751e+07 (e_abs 3.735e+07)",
+        "Aktivasi server dengan pk A + rlk B: diterima=true (format valid tidak membuktikan pasangan kunci)",
+        "Topup tetap benar (tanpa relinearization); transaksi P001 x2 COMBO -\u003e total didekripsi 3.19513e+07"
+      ],
+      "expected": "Pustaka tidak dapat mendeteksi rlk yang salah; hasil dekripsi dengan sk A tidak sesuai acuan (dicatat nilainya)",
+      "actual": "terisolasi: 3.73751e+07 (e_abs 3.735e+07); via server: aktivasi diterima=true, total 3.19513e+07 (e_abs 3.193e+07)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "kontrol: rlk A",
+          "expected": "22000.00",
+          "actual_raw": 22000.00000128471,
+          "e_abs": 0.0000012847085599787533,
+          "e_rel": "5.840e-11",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Lattigo tidak memverifikasi bahwa rlk berasal dari sk yang sama; hanya pemeriksaan di klien (ValidateKeys sebelum aktivasi/impor) yang dapat mencegahnya."
+      ]
+    },
+    {
+      "id": "U09",
+      "category": "Kunci evaluasi berbeda",
+      "profile": "p2",
+      "input": "Evaluasi tagihan P001 x2 COMBO (acuan 22000) dengan pk akun A tetapi rlk dari pasangan kunci B",
+      "steps": [
+        "Evaluasi terisolasi dengan rlk B: galat pustaka=false; hasil dekripsi sk A = -1.19771e+19 (e_abs 1.198e+19)",
+        "Aktivasi server dengan pk A + rlk B: diterima=true (format valid tidak membuktikan pasangan kunci)",
+        "Topup tetap benar (tanpa relinearization); transaksi P001 x2 COMBO -\u003e total didekripsi -5.68134e+18"
+      ],
+      "expected": "Pustaka tidak dapat mendeteksi rlk yang salah; hasil dekripsi dengan sk A tidak sesuai acuan (dicatat nilainya)",
+      "actual": "terisolasi: -1.19771e+19 (e_abs 1.198e+19); via server: aktivasi diterima=true, total -5.68134e+18 (e_abs 5.681e+18)",
+      "pass": true,
+      "measures": [
+        {
+          "label": "kontrol: rlk A",
+          "expected": "22000.00",
+          "actual_raw": 22000.000077892444,
+          "e_abs": 0.00007789244409650564,
+          "e_rel": "3.541e-09",
+          "within_tolerance": true
+        }
+      ],
+      "notes": [
+        "Lattigo tidak memverifikasi bahwa rlk berasal dari sk yang sama; hanya pemeriksaan di klien (ValidateKeys sebelum aktivasi/impor) yang dapat mencegahnya."
+      ]
+    },
+    {
+      "id": "U10",
+      "category": "Akun belum aktif",
+      "profile": "p1",
+      "input": "user_id=u10-p1-546200 (tidak pernah diaktifkan)",
+      "steps": [
+        "CheckBalance -\u003e HTTP 404 account_not_found: account \"u10-p1-546200\" is not activated",
+        "Topup -\u003e HTTP 404 account_not_found: account \"u10-p1-546200\" is not activated",
+        "Transact -\u003e HTTP 404 account_not_found: account \"u10-p1-546200\" is not activated",
+        "GetTransact -\u003e HTTP 404 account_not_found: account \"u10-p1-546200\" is not activated"
+      ],
+      "expected": "CheckBalance, Topup, Transact, GetTransact -\u003e HTTP 404 account_not_found (pilihan kontrak: 404)",
+      "actual": "4/4 panggilan mengembalikan 404 account_not_found",
+      "pass": true
+    },
+    {
+      "id": "U10",
+      "category": "Akun belum aktif",
+      "profile": "p2",
+      "input": "user_id=u10-p2-546200 (tidak pernah diaktifkan)",
+      "steps": [
+        "CheckBalance -\u003e HTTP 404 account_not_found: account \"u10-p2-546200\" is not activated",
+        "Topup -\u003e HTTP 404 account_not_found: account \"u10-p2-546200\" is not activated",
+        "Transact -\u003e HTTP 404 account_not_found: account \"u10-p2-546200\" is not activated",
+        "GetTransact -\u003e HTTP 404 account_not_found: account \"u10-p2-546200\" is not activated"
+      ],
+      "expected": "CheckBalance, Topup, Transact, GetTransact -\u003e HTTP 404 account_not_found (pilihan kontrak: 404)",
+      "actual": "4/4 panggilan mengembalikan 404 account_not_found",
+      "pass": true
+    },
+    {
+      "id": "U11",
+      "category": "Batas nilai (overflow)",
+      "profile": "p1",
+      "input": "batas aman |x| \u003c= q0/(2*skala) = 524287 (semua pola slot); penjaga klien 500000; nilai diturunkan ke level 0 lalu didekripsi",
+      "steps": [
+        "Penjaga klien EncryptScalar(600000): value out of range: slot 0 = 600000 (limit 524287)",
+        "skalar 400000 (slot 0), level 0 -\u003e slot 0 didekripsi 400000 (benar)",
+        "vektor penuh 400000 (4096 slot), level 0 -\u003e slot 0 didekripsi 400000 (benar)",
+        "skalar 600000 (slot 0), level 0 -\u003e slot 0 didekripsi 600000 (benar)",
+        "vektor penuh 600000 (4096 slot), level 0 -\u003e slot 0 didekripsi -448576 (SALAH, tanpa galat)",
+        "skalar 1e10 (slot 0), level 0 -\u003e slot 0 didekripsi 4.76811e+08 (SALAH, tanpa galat)"
+      ],
+      "expected": "Penjaga klien menolak \u003e batas; di bawah batas hasil benar; di atas batas (vektor penuh 600000, skalar 1e10) hasil salah TANPA pesan galat",
+      "actual": "penjaga menolak: true; vektor penuh 600000 -\u003e -448576; skalar 1e10 -\u003e 4.76811e+08",
+      "pass": true,
+      "measures": [
+        {
+          "label": "skalar 400000 (slot 0) pada level 0",
+          "expected": "400000.00",
+          "actual_raw": 400000,
+          "e_abs": 0,
+          "e_rel": "0.000e+00",
+          "within_tolerance": true
+        },
+        {
+          "label": "vektor penuh 400000 (4096 slot) pada level 0",
+          "expected": "400000.00",
+          "actual_raw": 400000.00000000006,
+          "e_abs": 5.820766091346741e-11,
+          "e_rel": "1.455e-16",
+          "within_tolerance": true
+        },
+        {
+          "label": "skalar 600000 (slot 0) pada level 0",
+          "expected": "600000.00",
+          "actual_raw": 599999.9999999993,
+          "e_abs": 6.984919309616089e-10,
+          "e_rel": "1.164e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "vektor penuh 600000 (4096 slot) pada level 0",
+          "expected": "600000.00",
+          "actual_raw": -448575.9999999839,
+          "e_abs": 1048575.9999999839,
+          "e_rel": "1.748e+00",
+          "within_tolerance": false
+        },
+        {
+          "label": "skalar 1e10 (slot 0) pada level 0",
+          "expected": "10000000000.00",
+          "actual_raw": 476810794.04725504,
+          "e_abs": 9523189205.952745,
+          "e_rel": "9.523e-01",
+          "within_tolerance": false
+        }
+      ],
+      "notes": [
+        "Overflow terjadi pada koefisien polinomial: |koefisien| \u003e= q0/2 membungkus modulo q0 tanpa pesan galat. Untuk vektor penuh koefisien ke-0 = x*skala, sehingga batas 524287 berlaku umum; nilai di satu slot tersebar ke banyak koefisien (~x*skala*2/N) sehingga baru overflow jauh di atas batas. Klien memakai batas konservatif 500000 untuk saldo, nominal, dan subtotal."
+      ]
+    },
+    {
+      "id": "U11",
+      "category": "Batas nilai (overflow)",
+      "profile": "p2",
+      "input": "batas aman |x| \u003c= q0/(2*skala) = 524287 (semua pola slot); penjaga klien 500000; nilai diturunkan ke level 0 lalu didekripsi",
+      "steps": [
+        "Penjaga klien EncryptScalar(600000): value out of range: slot 0 = 600000 (limit 524287)",
+        "skalar 400000 (slot 0), level 0 -\u003e slot 0 didekripsi 400000 (benar)",
+        "vektor penuh 400000 (8192 slot), level 0 -\u003e slot 0 didekripsi 400000 (benar)",
+        "skalar 600000 (slot 0), level 0 -\u003e slot 0 didekripsi 600000 (benar)",
+        "vektor penuh 600000 (8192 slot), level 0 -\u003e slot 0 didekripsi -448576 (SALAH, tanpa galat)",
+        "skalar 1e10 (slot 0), level 0 -\u003e slot 0 didekripsi 1.23364e+08 (SALAH, tanpa galat)"
+      ],
+      "expected": "Penjaga klien menolak \u003e batas; di bawah batas hasil benar; di atas batas (vektor penuh 600000, skalar 1e10) hasil salah TANPA pesan galat",
+      "actual": "penjaga menolak: true; vektor penuh 600000 -\u003e -448576; skalar 1e10 -\u003e 1.23364e+08",
+      "pass": true,
+      "measures": [
+        {
+          "label": "skalar 400000 (slot 0) pada level 0",
+          "expected": "400000.00",
+          "actual_raw": 399999.9999999968,
+          "e_abs": 3.2014213502407074e-9,
+          "e_rel": "8.004e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "vektor penuh 400000 (8192 slot) pada level 0",
+          "expected": "400000.00",
+          "actual_raw": 400000.0000000006,
+          "e_abs": 5.820766091346741e-10,
+          "e_rel": "1.455e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "skalar 600000 (slot 0) pada level 0",
+          "expected": "600000.00",
+          "actual_raw": 599999.999999999,
+          "e_abs": 1.0477378964424133e-9,
+          "e_rel": "1.746e-15",
+          "within_tolerance": true
+        },
+        {
+          "label": "vektor penuh 600000 (8192 slot) pada level 0",
+          "expected": "600000.00",
+          "actual_raw": -448575.99999991356,
+          "e_abs": 1048575.9999999136,
+          "e_rel": "1.748e+00",
+          "within_tolerance": false
+        },
+        {
+          "label": "skalar 1e10 (slot 0) pada level 0",
+          "expected": "10000000000.00",
+          "actual_raw": 123364421.8460145,
+          "e_abs": 9876635578.153986,
+          "e_rel": "9.877e-01",
+          "within_tolerance": false
+        }
+      ],
+      "notes": [
+        "Overflow terjadi pada koefisien polinomial: |koefisien| \u003e= q0/2 membungkus modulo q0 tanpa pesan galat. Untuk vektor penuh koefisien ke-0 = x*skala, sehingga batas 524287 berlaku umum; nilai di satu slot tersebar ke banyak koefisien (~x*skala*2/N) sehingga baru overflow jauh di atas batas. Klien memakai batas konservatif 500000 untuk saldo, nominal, dan subtotal."
+      ]
+    },
+    {
+      "id": "U12",
+      "category": "Permintaan serentak",
+      "profile": "p1",
+      "input": "saldo awal 20000; 10 topup 1000 dan 3 transaksi P005 x1 NONE dikirim bersamaan",
+      "steps": [
+        "13 permintaan paralel selesai, 0 gagal; server menyerialkan operasi per akun (mutex per user_id) dan menyimpan saldo+riwayat dalam satu transaksi SQL"
+      ],
+      "expected": "Semua permintaan berhasil; saldo akhir = 20000 + 10000 - 15000 = 15000; riwayat berisi 3 transaksi (tidak ada update yang hilang)",
+      "actual": "gagal 0, saldo 15000.000003, riwayat 3 entri",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo akhir",
+          "expected": "15000.00",
+          "actual_raw": 15000.000003170024,
+          "e_abs": 0.0000031700237741461024,
+          "e_rel": "2.113e-10",
+          "within_tolerance": true
+        }
+      ]
+    },
+    {
+      "id": "U12",
+      "category": "Permintaan serentak",
+      "profile": "p2",
+      "input": "saldo awal 20000; 10 topup 1000 dan 3 transaksi P005 x1 NONE dikirim bersamaan",
+      "steps": [
+        "13 permintaan paralel selesai, 0 gagal; server menyerialkan operasi per akun (mutex per user_id) dan menyimpan saldo+riwayat dalam satu transaksi SQL"
+      ],
+      "expected": "Semua permintaan berhasil; saldo akhir = 20000 + 10000 - 15000 = 15000; riwayat berisi 3 transaksi (tidak ada update yang hilang)",
+      "actual": "gagal 0, saldo 15000.000050, riwayat 3 entri",
+      "pass": true,
+      "measures": [
+        {
+          "label": "saldo akhir",
+          "expected": "15000.00",
+          "actual_raw": 15000.000049742383,
+          "e_abs": 0.00004974238254362717,
+          "e_rel": "3.316e-09",
+          "within_tolerance": true
+        }
+      ]
+    }
+  ],
+  "tolerance_metadata": 0.25,
+  "tolerance_money": 0.01
+}

@@ -1,0 +1,16 @@
+{
+  "request": {
+    "body": "{\"enc_amount\":",
+    "body_bytes": 14,
+    "method": "POST",
+    "path": "/accounts/u08-p1-546200/topup"
+  },
+  "response": {
+    "body": {
+      "detail": "malformed JSON",
+      "error": "invalid_json"
+    },
+    "body_bytes": 51,
+    "status": 400
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "_comment": "Inputs of the functional scenarios (U04, U05, U06). Amounts are decimal strings so the reference uses exact rational arithmetic (math/big).",
+  "u04_topups": ["100000", "2500.75", "0.5", "33333.33", "1", "12345.67"],
+  "u05_initial_topup": "100000",
+  "u05_transactions": [
+    { "product_id": "P002", "quantity": 1, "discount_code": "NONE",    "kind": "tanpa diskon" },
+    { "product_id": "P003", "quantity": 2, "discount_code": "DISC10",  "kind": "diskon persentase" },
+    { "product_id": "P004", "quantity": 1, "discount_code": "FLAT500", "kind": "potongan tetap" },
+    { "product_id": "P001", "quantity": 2, "discount_code": "COMBO",   "kind": "kombinasi (acuan spesifikasi: 22000)" }
+  ],
+  "u06_initial_topup": "10000",
+  "u06_transaction": { "product_id": "P003", "quantity": 1, "discount_code": "NONE" }
+}

@@ -1,0 +1,6 @@
+{
+  "node": "v24.11.1",
+  "v8": "13.6.233.10-node.28",
+  "platform": "win32/x64",
+  "go_wasm": "sisterpedia-bridge/1 github.com/tuneinsight/lattigo/v6 v6.2.0 sisterpedia-ckks/1 (lattigo v6 binary)"
+}

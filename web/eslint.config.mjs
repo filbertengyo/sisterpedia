@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated: copied from the Go toolchain by `make wasm`.
+    "public/wasm_exec.js",
+    "playwright-report/**",
+    "test-results/**",
   ]),
 ]);
 

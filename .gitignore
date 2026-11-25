@@ -5,6 +5,7 @@
 !.env.example
 !tests/fixtures/keys/
 !tests/fixtures/keys/**
+issues
 
 # Data runtime
 client_data/

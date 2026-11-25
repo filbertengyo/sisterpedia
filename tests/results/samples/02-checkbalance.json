@@ -1,0 +1,16 @@
+{
+  "request": {
+    "body": null,
+    "body_bytes": 0,
+    "method": "GET",
+    "path": "/accounts/u01-p1-546200/balance"
+  },
+  "response": {
+    "body": {
+      "enc_balance": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+      "user_id": "u01-p1-546200"
+    },
+    "body_bytes": 524801,
+    "status": 200
+  }
+}

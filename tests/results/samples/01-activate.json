@@ -1,0 +1,23 @@
+{
+  "request": {
+    "body": {
+      "enc_balance": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+      "params": "eyJMb2dOIjoxMywiTG9nTnRoUm9vdCI6MTQsIlEiOlsxMTUyOTIxNTA0NjA2ODMwNTkzLDEwOTk1MTE0... [Base64 dipotong: 340 karakter, 255 byte biner]",
+      "public_key": "AgAAAAAAAAADAAAAAAAAAAAgAAAAAAAA/N5ArNmsBAN7ThZZnbI2CiJQPvCVy+ECjamQ0C+GbQJ9pLdy... [Base64 dipotong: 699192 karakter, 524392 byte biner]",
+      "relin_key": "AAAAAAAAAAADAAAAAAAAAAEAAAAAAAAAAgAAAAAAAAADAAAAAAAAAAAgAAAAAAAAnTAHnogisQZO2Ob4... [Base64 dipotong: 2097624 karakter, 1573216 byte biner]",
+      "user_id": "u01-p1-546200"
+    },
+    "body_bytes": 3321999,
+    "method": "POST",
+    "path": "/accounts"
+  },
+  "response": {
+    "body": {
+      "enc_balance": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+      "status": "activated",
+      "user_id": "u01-p1-546200"
+    },
+    "body_bytes": 524822,
+    "status": 201
+  }
+}

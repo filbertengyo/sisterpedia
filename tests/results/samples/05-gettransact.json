@@ -1,0 +1,41 @@
+{
+  "request": {
+    "body": null,
+    "body_bytes": 0,
+    "method": "GET",
+    "path": "/accounts/u05-p1-546200/transactions"
+  },
+  "response": {
+    "body": {
+      "transactions": [
+        {
+          "created_at": "2026-11-25T09:08:59Z",
+          "enc_metadata": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+          "enc_total": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 175188 karakter, 131390 byte biner]",
+          "transaction_id": "01M88ZE9AM8Y6TF4C02GPQMG6C"
+        },
+        {
+          "created_at": "2026-11-25T09:08:59Z",
+          "enc_metadata": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+          "enc_total": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 175188 karakter, 131390 byte biner]",
+          "transaction_id": "01M88ZE9DJHD6BS0MS48GD9PA7"
+        },
+        {
+          "created_at": "2026-11-25T09:08:59Z",
+          "enc_metadata": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+          "enc_total": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 175188 karakter, 131390 byte biner]",
+          "transaction_id": "01M88ZE9F1B09FWAYHQK71FH0C"
+        },
+        {
+          "created_at": "2026-11-25T09:08:59Z",
+          "enc_metadata": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 524756 karakter, 393566 byte biner]",
+          "enc_total": "AXsiUGxhaW50ZXh0TWV0YURhdGEiOnsiU2NhbGUiOnsiVmFsdWUiOiIxLjA5OTUxMTYyNzc3NjAwMDAw... [Base64 dipotong: 175188 karakter, 131390 byte biner]",
+          "transaction_id": "01M88ZE9GG2J2NV4QGC8TF30DD"
+        }
+      ],
+      "user_id": "u05-p1-546200"
+    },
+    "body_bytes": 2800289,
+    "status": 200
+  }
+}
