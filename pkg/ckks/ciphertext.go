@@ -13,13 +13,26 @@ type Ciphertext struct {
 	value   rlwe.Ciphertext
 }
 
+type serializedCiphertext struct {
+	Profile    Profile `json:"profile"`
+	Ciphertext []byte  `json:"ciphertext"`
+}
+
 func (c Ciphertext) MarshalBinary() ([]byte, error) {
-	type Alias Ciphertext
+	ciphertext, err := c.value.MarshalBinary()
+	if err != nil {
+		return nil, err
+	}
+
+	payload := serializedCiphertext{
+		Profile: c.Profile,
+		Ciphertext: ciphertext,
+	}
 
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 
-	err := encoder.Encode(Alias(c))
+	err = encoder.Encode(payload)
 	if err != nil {
 		return nil, err
 	}
@@ -28,22 +41,22 @@ func (c Ciphertext) MarshalBinary() ([]byte, error) {
 }
 
 func (c *Ciphertext) UnmarshalBinary(data []byte) error {
-	type Alias Ciphertext
-
 	buffer := bytes.NewBuffer(data)
 	decoder := gob.NewDecoder(buffer)
 
-	err := decoder.Decode((*Alias)(c))
+	var payload serializedCiphertext
+	err := decoder.Decode(&payload)
+	if err != nil {
+		return err
+	}
+
+	c.Profile = payload.Profile
+	err = c.value.UnmarshalBinary(payload.Ciphertext)
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-type ciphertextJson struct {
-	Profile    string `json:"profile"`
-	Ciphertext []byte `json:"ciphertext"`
 }
 
 func (c Ciphertext) MarshalJSON() ([]byte, error) {
@@ -52,8 +65,8 @@ func (c Ciphertext) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	payload := ciphertextJson{
-		Profile:    c.Profile.Name,
+	payload := serializedCiphertext{
+		Profile:    c.Profile,
 		Ciphertext: ciphertext,
 	}
 
@@ -61,17 +74,13 @@ func (c Ciphertext) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Ciphertext) UnmarshalJSON(data []byte) error {
-	var payload ciphertextJson
+	var payload serializedCiphertext
 	err := json.Unmarshal(data, &payload)
 	if err != nil {
 		return err
 	}
 
-	c.Profile, err = GetProfile(payload.Profile)
-	if err != nil {
-		return err
-	}
-
+	c.Profile = payload.Profile
 	err = c.value.UnmarshalBinary(payload.Ciphertext)
 	if err != nil {
 		return err
