@@ -3,9 +3,8 @@ package ckks
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/binary"
+	"encoding/gob"
 	"encoding/json"
-	"errors"
 
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
@@ -131,113 +130,32 @@ type PublicKeyset struct {
 	RLK     RelinearizationKey `json:"rlk"`
 }
 
-// Magic Number: SISTER + PKS + (version)
-const publicKeysetMagicNumber0 = "SISTERPKS0"
-
 func (pks PublicKeyset) MarshalBinary() ([]byte, error) {
-	profileBin, err := pks.Profile.MarshalBinary()
+	type Alias PublicKeyset
+
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+
+	err := encoder.Encode(Alias(pks))
 	if err != nil {
 		return nil, err
 	}
-	profileSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(profileSize, uint32(len(profileBin)))
 
-	pkBin, err := pks.PK.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	pkSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(pkSize, uint32(len(pkBin)))
-
-	rlkBin, err := pks.RLK.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	rlkSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(rlkSize, uint32(len(rlkBin)))
-
-	chunks := [][]byte{
-		[]byte(publicKeysetMagicNumber0),
-		profileSize,
-		profileBin,
-		pkSize,
-		pkBin,
-		rlkSize,
-		rlkBin,
-	}
-
-	return bytes.Join(chunks, nil), nil
+	return buffer.Bytes(), nil
 }
 
 func (pks *PublicKeyset) UnmarshalBinary(data []byte) error {
-	var err error = nil
-	offset := 0
+	type Alias PublicKeyset
 
-	if bytes.HasPrefix(data, []byte(publicKeysetMagicNumber0)) {
-		offset = len(publicKeysetMagicNumber0)
+	buffer := bytes.NewBuffer(data)
+	decoder := gob.NewDecoder(buffer)
 
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		profileSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+profileSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		profileBin := data[offset : offset+profileSize]
-		offset += profileSize
-
-		var profile Profile
-		err = profile.UnmarshalBinary(profileBin)
-		if err != nil {
-			return err
-		}
-
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		pkSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+pkSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		pkBin := data[offset : offset+pkSize]
-		offset += pkSize
-
-		var pk PublicKey
-		err = pk.UnmarshalBinary(pkBin)
-		if err != nil {
-			return err
-		}
-
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		rlkSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+rlkSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		rlkBin := data[offset : offset+rlkSize]
-		offset += pkSize
-
-		var rlk RelinearizationKey
-		err = rlk.UnmarshalBinary(rlkBin)
-		if err != nil {
-			return err
-		}
-
-		pks.Profile = profile
-		pks.PK = pk
-		pks.RLK = rlk
-
-		return nil
+	err := decoder.Decode((*Alias)(pks))
+	if err != nil {
+		return err
 	}
 
-	return errors.New("unrecognized binary format")
+	return nil
 }
 
 type Keyset struct {
@@ -247,141 +165,32 @@ type Keyset struct {
 	RLK     RelinearizationKey `json:"rlk"`
 }
 
-// Magic Number: SISTER + KS + (version)
-const keysetMagicNumber0 = "SISTERKS0"
-
 func (ks Keyset) MarshalBinary() ([]byte, error) {
-	profileBin, err := ks.Profile.MarshalBinary()
+	type Alias Keyset
+
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+
+	err := encoder.Encode(Alias(ks))
 	if err != nil {
 		return nil, err
 	}
-	profileSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(profileSize, uint32(len(profileBin)))
 
-	skBin, err := ks.SK.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	skSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(skSize, uint32(len(skBin)))
-
-	pkBin, err := ks.PK.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	pkSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(pkSize, uint32(len(pkBin)))
-
-	rlkBin, err := ks.RLK.MarshalBinary()
-	if err != nil {
-		return nil, err
-	}
-	rlkSize := make([]byte, 4)
-	binary.BigEndian.PutUint32(rlkSize, uint32(len(rlkBin)))
-
-	chunks := [][]byte{
-		[]byte(keysetMagicNumber0),
-		profileSize,
-		profileBin,
-		skSize,
-		skBin,
-		pkSize,
-		pkBin,
-		rlkSize,
-		rlkBin,
-	}
-
-	return bytes.Join(chunks, nil), nil
+	return buffer.Bytes(), nil
 }
 
 func (ks *Keyset) UnmarshalBinary(data []byte) error {
-	var err error = nil
-	offset := 0
+	type Alias Keyset
 
-	if bytes.HasPrefix(data, []byte(keysetMagicNumber0)) {
-		offset = len(keysetMagicNumber0)
+	buffer := bytes.NewBuffer(data)
+	decoder := gob.NewDecoder(buffer)
 
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		profileSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+profileSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		profileBin := data[offset : offset+profileSize]
-		offset += profileSize
-
-		var profile Profile
-		err = profile.UnmarshalBinary(profileBin)
-		if err != nil {
-			return err
-		}
-
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		skSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+skSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		skBin := data[offset : offset+skSize]
-		offset += skSize
-
-		var sk SecretKey
-		err = sk.UnmarshalBinary(skBin)
-		if err != nil {
-			return err
-		}
-
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		pkSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+pkSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		pkBin := data[offset : offset+pkSize]
-		offset += pkSize
-
-		var pk PublicKey
-		err = pk.UnmarshalBinary(pkBin)
-		if err != nil {
-			return err
-		}
-
-		if offset+4 > len(data) {
-			return errors.New("unexpected eof")
-		}
-		rlkSize := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		offset += 4
-
-		if offset+rlkSize > len(data) {
-			return errors.New("unexpected eof")
-		}
-		rlkBin := data[offset : offset+rlkSize]
-		offset += pkSize
-
-		var rlk RelinearizationKey
-		err = rlk.UnmarshalBinary(rlkBin)
-		if err != nil {
-			return err
-		}
-
-		ks.Profile = profile
-		ks.SK = sk
-		ks.PK = pk
-		ks.RLK = rlk
-
-		return nil
+	err := decoder.Decode((*Alias)(ks))
+	if err != nil {
+		return err
 	}
 
-	return errors.New("unrecognized binary format")
+	return nil
 }
 
 func (ks Keyset) ExportPublic() PublicKeyset {
