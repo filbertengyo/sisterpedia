@@ -14,9 +14,9 @@ type ClientCrypto struct {
 }
 
 func (ks Keyset) NewClientCrypto() (ClientCrypto, error) {
-	encoder := *ckks.NewEncoder(ks.Profile.params)
-	encryptor := *ckks.NewEncryptor(ks.Profile.params, &ks.PK.value)
-	decryptor := *ckks.NewDecryptor(ks.Profile.params, &ks.SK.value)
+	encoder := *ckks.NewEncoder(ks.Profile().params)
+	encryptor := *ckks.NewEncryptor(ks.Profile().params, &ks.pk.value)
+	decryptor := *ckks.NewDecryptor(ks.Profile().params, &ks.sk.value)
 
 	return ClientCrypto{
 		Keyset:    ks,

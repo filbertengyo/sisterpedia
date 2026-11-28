@@ -12,8 +12,8 @@ type ServerCrypto struct {
 }
 
 func (pks PublicKeyset) NewServerCrypto() (ServerCrypto, error) {
-	encoder := *ckks.NewEncoder(pks.Profile.params)
-	encryptor := *ckks.NewEncryptor(pks.Profile.params, &pks.PK.value)
+	encoder := *ckks.NewEncoder(pks.Profile().params)
+	encryptor := *ckks.NewEncryptor(pks.Profile().params, &pks.pk.value)
 
 	return ServerCrypto{
 		PublicKeyset: pks,
@@ -23,12 +23,12 @@ func (pks PublicKeyset) NewServerCrypto() (ServerCrypto, error) {
 }
 
 func (sc ServerCrypto) EncryptScalar(value float64) (Ciphertext, error) {
-	level := sc.PublicKeyset.Profile.params.MaxLevel()
+	level := sc.PublicKeyset.Profile().params.MaxLevel()
 	return sc.EncryptScalarAt(value, level)
 }
 
 func (sc ServerCrypto) EncryptVector(values []float64) (Ciphertext, error) {
-	level := sc.PublicKeyset.Profile.params.MaxLevel()
+	level := sc.PublicKeyset.Profile().params.MaxLevel()
 	return sc.EncryptVectorAt(values, level)
 }
 
@@ -37,7 +37,7 @@ func (sc ServerCrypto) EncryptScalarAt(value float64, level int) (Ciphertext, er
 }
 
 func (sc ServerCrypto) EncryptVectorAt(values []float64, level int) (Ciphertext, error) {
-	plaintext := ckks.NewPlaintext(sc.PublicKeyset.Profile.params, level)
+	plaintext := ckks.NewPlaintext(sc.PublicKeyset.Profile().params, level)
 	err := sc.encoder.Encode(values, plaintext)
 	if err != nil {
 		return Ciphertext{}, err
@@ -49,7 +49,7 @@ func (sc ServerCrypto) EncryptVectorAt(values []float64, level int) (Ciphertext,
 	}
 
 	return Ciphertext{
-		Profile: sc.PublicKeyset.Profile,
+		Profile: sc.PublicKeyset.Profile(),
 		value:   *ciphertext,
 	}, nil
 }
