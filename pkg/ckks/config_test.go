@@ -96,7 +96,7 @@ func TestProfileBinaryMarshal(t *testing.T) {
 		return
 	}
 
-	if profile.Name != decodedProfile.Name {
+	if profile.Name() != decodedProfile.Name() {
 		t.Error("decoded profile does not match original")
 		return
 	}
@@ -122,7 +122,7 @@ func TestProfileJsonMarshal(t *testing.T) {
 		return
 	}
 
-	if profile.Name != decodedProfile.Name {
+	if profile.Name() != decodedProfile.Name() {
 		t.Error("decoded profile does not match original")
 		return
 	}
