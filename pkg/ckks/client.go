@@ -8,7 +8,7 @@ import (
 )
 
 type ClientCrypto struct {
-	Keyset    Keyset
+	keyset    Keyset
 	decryptor rlwe.Decryptor
 	ServerCrypto
 }
@@ -19,14 +19,18 @@ func (ks Keyset) NewClientCrypto() (ClientCrypto, error) {
 	decryptor := *ckks.NewDecryptor(ks.Profile().params, &ks.sk.value)
 
 	return ClientCrypto{
-		Keyset:    ks,
+		keyset:    ks,
 		decryptor: decryptor,
 		ServerCrypto: ServerCrypto{
-			PublicKeyset: ks.ExportPublic(),
-			encoder:      encoder,
-			encryptor:    encryptor,
+			pks:       ks.ExportPublic(),
+			encoder:   encoder,
+			encryptor: encryptor,
 		},
 	}, nil
+}
+
+func (cc ClientCrypto) Keyset() Keyset {
+	return cc.keyset
 }
 
 func (cc ClientCrypto) DecryptScalar(ciphertext Ciphertext) (float64, error) {
