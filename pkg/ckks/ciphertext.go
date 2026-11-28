@@ -9,13 +9,17 @@ import (
 )
 
 type Ciphertext struct {
-	Profile Profile
+	profile Profile
 	value   rlwe.Ciphertext
 }
 
 type serializedCiphertext struct {
 	Profile    Profile `json:"profile"`
 	Ciphertext []byte  `json:"ciphertext"`
+}
+
+func (c Ciphertext) Profile() Profile {
+	return c.profile
 }
 
 func (c Ciphertext) MarshalBinary() ([]byte, error) {
@@ -25,7 +29,7 @@ func (c Ciphertext) MarshalBinary() ([]byte, error) {
 	}
 
 	payload := serializedCiphertext{
-		Profile: c.Profile,
+		Profile: c.Profile(),
 		Ciphertext: ciphertext,
 	}
 
@@ -50,7 +54,7 @@ func (c *Ciphertext) UnmarshalBinary(data []byte) error {
 		return err
 	}
 
-	c.Profile = payload.Profile
+	c.profile = payload.Profile
 	err = c.value.UnmarshalBinary(payload.Ciphertext)
 	if err != nil {
 		return err
@@ -66,7 +70,7 @@ func (c Ciphertext) MarshalJSON() ([]byte, error) {
 	}
 
 	payload := serializedCiphertext{
-		Profile:    c.Profile,
+		Profile:    c.Profile(),
 		Ciphertext: ciphertext,
 	}
 
@@ -80,7 +84,7 @@ func (c *Ciphertext) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	c.Profile = payload.Profile
+	c.profile = payload.Profile
 	err = c.value.UnmarshalBinary(payload.Ciphertext)
 	if err != nil {
 		return err
