@@ -10,13 +10,17 @@ import (
 )
 
 type SecretKey struct {
-	Profile Profile
+	profile Profile
 	value   rlwe.SecretKey
 }
 
 type serializedSecretKey struct {
 	Profile   Profile `json:"profile"`
 	SecretKey []byte  `json:"secretKey"`
+}
+
+func (sk SecretKey) Profile() Profile {
+	return sk.profile
 }
 
 func (sk SecretKey) MarshalBinary() ([]byte, error) {
@@ -26,7 +30,7 @@ func (sk SecretKey) MarshalBinary() ([]byte, error) {
 	}
 
 	payload := serializedSecretKey{
-		Profile:   sk.Profile,
+		Profile:   sk.Profile(),
 		SecretKey: secretKey,
 	}
 
@@ -51,7 +55,7 @@ func (sk *SecretKey) UnmarshalBinary(data []byte) error {
 		return err
 	}
 
-	sk.Profile = payload.Profile
+	sk.profile = payload.Profile
 	err = sk.value.UnmarshalBinary(payload.SecretKey)
 	if err != nil {
 		return err
@@ -67,7 +71,7 @@ func (sk SecretKey) MarshalJSON() ([]byte, error) {
 	}
 
 	payload := serializedSecretKey{
-		Profile:   sk.Profile,
+		Profile:   sk.Profile(),
 		SecretKey: secretKey,
 	}
 
@@ -81,7 +85,7 @@ func (sk *SecretKey) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	sk.Profile = payload.Profile
+	sk.profile = payload.Profile
 	err = sk.value.UnmarshalBinary(payload.SecretKey)
 	if err != nil {
 		return err
@@ -91,13 +95,17 @@ func (sk *SecretKey) UnmarshalJSON(data []byte) error {
 }
 
 type PublicKey struct {
-	Profile Profile
+	profile Profile
 	value   rlwe.PublicKey
 }
 
 type serializedPublicKey struct {
 	Profile   Profile `json:"profile"`
 	PublicKey []byte  `json:"publicKey"`
+}
+
+func (pk PublicKey) Profile() Profile {
+	return pk.profile
 }
 
 func (pk PublicKey) MarshalBinary() ([]byte, error) {
@@ -107,7 +115,7 @@ func (pk PublicKey) MarshalBinary() ([]byte, error) {
 	}
 
 	payload := serializedPublicKey{
-		Profile:   pk.Profile,
+		Profile:   pk.Profile(),
 		PublicKey: publicKey,
 	}
 
@@ -132,7 +140,7 @@ func (pk *PublicKey) UnmarshalBinary(data []byte) error {
 		return err
 	}
 
-	pk.Profile = payload.Profile
+	pk.profile = payload.Profile
 	err = pk.value.UnmarshalBinary(payload.PublicKey)
 	if err != nil {
 		return err
@@ -148,7 +156,7 @@ func (pk PublicKey) MarshalJSON() ([]byte, error) {
 	}
 
 	payload := serializedPublicKey{
-		Profile:   pk.Profile,
+		Profile:   pk.Profile(),
 		PublicKey: publicKey,
 	}
 
@@ -162,7 +170,7 @@ func (pk *PublicKey) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	pk.Profile = payload.Profile
+	pk.profile = payload.Profile
 	err = pk.value.UnmarshalBinary(payload.PublicKey)
 	if err != nil {
 		return err
@@ -172,13 +180,17 @@ func (pk *PublicKey) UnmarshalJSON(data []byte) error {
 }
 
 type RelinearizationKey struct {
-	Profile Profile
+	profile Profile
 	value   rlwe.RelinearizationKey
 }
 
 type serializedRelinearizationKey struct {
 	Profile            Profile
 	RelinearizationKey []byte
+}
+
+func (rlk RelinearizationKey) Profile() Profile {
+	return rlk.profile
 }
 
 func (rlk RelinearizationKey) MarshalBinary() ([]byte, error) {
@@ -188,7 +200,7 @@ func (rlk RelinearizationKey) MarshalBinary() ([]byte, error) {
 	}
 
 	payload := serializedRelinearizationKey{
-		Profile:            rlk.Profile,
+		Profile:            rlk.Profile(),
 		RelinearizationKey: relinearizationKey,
 	}
 
@@ -213,7 +225,7 @@ func (rlk *RelinearizationKey) UnmarshalBinary(data []byte) error {
 		return err
 	}
 
-	rlk.Profile = payload.Profile
+	rlk.profile = payload.Profile
 	err = rlk.value.UnmarshalBinary(payload.RelinearizationKey)
 	if err != nil {
 		return err
@@ -229,7 +241,7 @@ func (rlk RelinearizationKey) MarshalJSON() ([]byte, error) {
 	}
 
 	payload := serializedRelinearizationKey{
-		Profile:            rlk.Profile,
+		Profile:            rlk.Profile(),
 		RelinearizationKey: relinearizationKey,
 	}
 
@@ -243,7 +255,7 @@ func (rlk *RelinearizationKey) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	rlk.Profile = payload.Profile
+	rlk.profile = payload.Profile
 	err = rlk.value.UnmarshalBinary(payload.RelinearizationKey)
 	if err != nil {
 		return err
@@ -341,8 +353,8 @@ func (profile Profile) GenKeys() (Keyset, error) {
 
 	return Keyset{
 		Profile: profile,
-		SK:      SecretKey{Profile: profile, value: *sk},
-		PK:      PublicKey{Profile: profile, value: *pk},
-		RLK:     RelinearizationKey{Profile: profile, value: *rlk},
+		SK:      SecretKey{profile: profile, value: *sk},
+		PK:      PublicKey{profile: profile, value: *pk},
+		RLK:     RelinearizationKey{profile: profile, value: *rlk},
 	}, nil
 }
