@@ -7,7 +7,7 @@ require (
 	github.com/oklog/ulid/v2 v2.1.2
 	github.com/tuneinsight/lattigo/v6 v6.2.0
 	gopkg.in/yaml.v3 v3.0.1
-	modernc.org/sqlite v1.62.0
+	modernc.org/sqlite v1.63.0
 )
 
 require (
